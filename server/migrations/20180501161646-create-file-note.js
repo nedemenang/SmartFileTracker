@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       notesBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       DateCreated: {
         type: Sequelize.DATE
@@ -24,7 +24,16 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      folderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Folders',
+          key: 'id',
+          as: 'folderId',
+        },
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

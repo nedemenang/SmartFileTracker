@@ -4,11 +4,11 @@ const Dotenv = require('dotenv-webpack');
 
 const config = {
   entry: [
-    path.join(__dirname, './client/index.jsx'),
+    path.join(__dirname, '../client/index.jsx'),
     'webpack-hot-middleware/client'
   ],
   output: {
-    path: path.resolve(__dirname, './client/public'),
+    path: path.resolve(__dirname, '../client/public'),
     publicPath: '/',
     filename: 'bundle.js',
   },

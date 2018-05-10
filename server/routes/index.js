@@ -1,5 +1,5 @@
 import departmentRoutes from "./department";
-import fileRoutes from './file';
+import fileRoutes from './folder';
 import userRoutes from './user';
 import roleRoutes from './role';
 

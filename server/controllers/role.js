@@ -22,7 +22,11 @@ export default {
                         name: req.body.name,
                         createdBy: req.body.createdBy
                     })
-                    .then((role) => res.status(201).send(role))
+                    .then((role) => res.status(201).send({
+                        success: true,
+                        data: role,
+                        message: 'Role successfully created'
+                    }))
                     .catch((error) => res.status(400).send(error))
             });
     },

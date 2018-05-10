@@ -27,15 +27,11 @@ module.exports = {
       createdBy: {
         type: Sequelize.STRING
       },
-      passwordHash: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       departmentId: {
         type: Sequelize.INTEGER
       },
-      roleId: {
-        type: Sequelize.INTEGER
+      role: {
+        type: Sequelize.STRING
       },
       isActive: {
         type: Sequelize.BOOLEAN
@@ -47,7 +43,16 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      departmentId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Departments',
+          key: 'id',
+          as: 'departmentId',
+        },
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

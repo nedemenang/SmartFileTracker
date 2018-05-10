@@ -17,24 +17,17 @@ export default function (sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    passwordHash: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
     isActive: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: false
     },
     createdBy: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    roleId: {
-      type: DataTypes.INTEGER
-    },
-    departmentId: {
-      type: DataTypes.INTEGER
-    },
+    role: {
+      type: DataTypes.STRING
+    }
   }, {});
   User.associate = function (models) {
     // associations can be defined here

@@ -21,7 +21,11 @@ export default {
                         name: req.body.name,
                         createdBy: req.body.createdBy
                     })
-                    .then(department => res.status(201).send(department))
+                    .then(department => res.status(201).send({
+                        success: true,
+                        data: department,
+                        message: 'Department successfully created'
+                    }))
                     .catch(error => res.status(400).send(error));
             })
     },

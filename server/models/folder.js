@@ -1,6 +1,6 @@
 'use strict';
 export default function (sequelize, DataTypes) {
-  const Folder = sequelize.define('File', {
+  const Folder = sequelize.define('Folder', {
     FileNo: {
       type: DataTypes.STRING,
     },
@@ -38,12 +38,12 @@ export default function (sequelize, DataTypes) {
   Folder.associate = function (models) {
     // associations can be defined here
     Folder.hasMany(models.FileMovement, {
-      foreignKey: 'fileId',
-      as: 'fileMovements',
+      foreignKey: 'folderId',
+      as: 'FileMovements',
     });
     Folder.hasMany(models.FileNote, {
-      foreignKey: 'fileId',
-      as: 'fileNotes',
+      foreignKey: 'folderId',
+      as: 'FileNotes',
     });
   };
   return Folder;

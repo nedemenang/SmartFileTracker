@@ -29,11 +29,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       movedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      movedTo: {
-        type: Sequelize.INTEGER
-      }
+      folderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Folders',
+          key: 'id',
+          as: 'folderId',
+        },
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

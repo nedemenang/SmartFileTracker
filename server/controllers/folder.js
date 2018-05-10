@@ -2,7 +2,6 @@ import {Folder} from "../models";
 import {FileMovement} from "../models";
 import {FileNote} from "../models";
 
-
 export default {
     createFile(req, res) {
         return Folder
@@ -19,15 +18,18 @@ export default {
                 }
                 return Folder 
                     .create({
-                        FileNo = req.body.fileNo,
-                        FileHash = req.body.fileHash,
-                        CreatedBy = req.body.createdBy,
-                        CreateOn = req.body.createdOn,
-                        CurrentDepartment = req.body.currentDepartment,
-                        FileDescription = req.body.fileDescription,
-                        FileLink = req.body.fileLink
+                        FileNo : req.body.fileNo,
+                        CreateOn : req.body.createdOn,
+                        CurrentDepartment : req.body.currentDepartment,
+                        FileDescription : req.body.fileDescription,
+                        FileLink : req.file.path,
+                        Createdby : req.userData.userName,
                     })
-                    .then(folder => res.status(201).send(folder))
+                    .then(folder => res.status(201).send({
+                        success: true,
+                        data: folder,
+                        message: 'file successfully created'
+                    }))
                     .catch(error => res.status(400).send(error));
             });
             
@@ -36,14 +38,13 @@ export default {
         return Folder
             .findById(req.params.fileId, {
                 include: [{
-                    model: FileNote, 
-                    attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
-                    as: 'FileNotes'
-                }],
-                include: [{
                     model: FileMovement,
-                    attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
+                    attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy'],
                     as: 'FileMovements'
+                }, {
+                    model: FileNote, 
+                    attributes: ['id', 'DateCreated', 'notes', 'notesBy'],
+                    as: 'FileNotes'
                 }]
             })
             .then(folder => res.status(201).send(folder))
@@ -57,8 +58,7 @@ export default {
                     model: FileNote, 
                     attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
                     as: 'FileNotes'
-                }],
-                include: [{
+                }, {
                     model: FileMovement,
                     attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
                     as: 'FileMovements'
@@ -78,8 +78,7 @@ export default {
                     model: FileNote, 
                     attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
                     as: 'FileNotes'
-                }],
-                include: [{
+                }, {
                     model: FileMovement,
                     attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
                     as: 'FileMovements'
@@ -94,14 +93,13 @@ export default {
             .all({
                 where: {
                     isActive: true,
-                    currentDepartment: req.params.departmentId
+                    CurrentDepartment: req.params.departmentId
                 }}, {
                 include: [{
                     model: FileNote, 
                     attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
                     as: 'FileNotes'
-                }],
-                include: [{
+                }, {
                     model: FileMovement,
                     attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
                     as: 'FileMovements'
@@ -122,11 +120,11 @@ export default {
                 }
                 return folder
                     .update({
-                        FileNo = req.body.fileNo || folder.fileNo,
-                        FileHash = req.body.fileHash || folder.fileHash,
-                        CurrentDepartment = req.body.currentDepartment || folder.currentDepartment,
-                        FileDescription = req.body.fileDescription || folder.fileDescription,
-                        FileLink = req.body.fileLink || folder.fileLink
+                        FileNo : req.body.fileNo || folder.fileNo,
+                        FileHash : req.body.fileHash || folder.fileHash,
+                        CurrentDepartment : req.body.currentDepartment || folder.currentDepartment,
+                        FileDescription : req.body.fileDescription || folder.fileDescription,
+                        FileLink : req.body.fileLink || folder.fileLink
                     })
                     .then((department) => res.status(200).send(folder))
                     .catch((error) => res.status(400).send(error));
@@ -139,11 +137,15 @@ export default {
                 DateMoved: req.body.dateMoved,
                 movedFromDepartmentId: req.body.movedFromDepartmentId,
                 movedToDepartmentId: req.body.movedToDepartmentId,
-                movedBy: req.body.movedBy,
+                movedBy: req.userData.userName,
                 movedTo: req.body.movedTo,
-                fileId: req.body.fileId
+                folderId: req.body.fileId
             })
-            .then(fileMovement => res.status(201).send(fileMovement))
+            .then(fileMovement => res.status(201).send({
+                success: true,
+                data: fileMovement,
+                message: 'File successfully moved'
+            }))
             .catch(error => res.status(400).send(error));
     },
 
@@ -151,11 +153,15 @@ export default {
         return FileNote
             .create({
                 DateCreated: req.body.dateCreated,
-                Notes: req.body.notes,
-                fileId: req.body.fileId,
-                NotesBy: req.body.notesBy
+                notes: req.body.notes,
+                folderId: req.body.fileId,
+                notesBy: req.userData.userName
             })
-            .then(fileNote => res.status(201).send(fileNote))
+            .then(fileNote => res.status(201).send({
+                success: true,
+                data: fileNote,
+                message: 'File note added'
+            }))
             .catch(error => res.status(400).send(error))
     }
 }

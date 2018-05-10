@@ -13,24 +13,15 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    fileId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     movedBy: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
-    },
-    movedTo: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    }
   });
   FileMovement.associate = (models) => {
     // associations can be defined here
     FileMovement.belongsTo(models.Folder, {
-      foreignKey: 'fileId',
-      onDelete: 'CASCADE',
+      foreignKey: 'folderId'
     });
   };
   return FileMovement;

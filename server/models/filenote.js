@@ -5,15 +5,11 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false
     },
-    Notes: {
+    notes: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    fileId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    NotesBy: {
+    notesBy: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -21,7 +17,7 @@ export default function (sequelize, DataTypes) {
   FileNote.associate = function (models) {
     // associations can be defined here
     FileNote.belongsTo(models.Folder, {
-      foreignKey: 'fileId'
+      foreignKey: 'folderId'
     });
   };
   return FileNote;
