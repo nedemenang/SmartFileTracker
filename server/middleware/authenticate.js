@@ -13,7 +13,7 @@ export default (req, res, next) => {
       if (err) { // failed verification.
         return res.status(401).send({
           success: false,
-          message: 'failed to authenticate token'
+          message: 'failed to authenticate token; Please re-login'
         });
       }
       req.userData = decoded;

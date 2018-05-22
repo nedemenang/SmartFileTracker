@@ -19,7 +19,7 @@ export default {
                 return Department
                     .create({
                         name: req.body.name,
-                        createdBy: req.body.createdBy
+                        createdBy: req.userData.userName
                     })
                     .then(department => res.status(201).send({
                         success: true,
@@ -37,8 +37,12 @@ export default {
                     isActive: true
                 }
             })
-            .then(departments => res.status(200).send(departments))
-            .catch(error => res.status(400).send(error));
+            .then(departments => res.status(200).send({
+                success: true, 
+                data: departments,
+                message: 'Departments fetched successfully'
+            }))
+            .catch(error => res.status(400).send(error))
     },
 
     retrieve(req, res) {

@@ -5,12 +5,12 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    movedFromDepartmentId: {
-      type: DataTypes.INTEGER,
+    movedFromDepartment: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    movedToDepartmentId: {
-      type: DataTypes.INTEGER,
+    movedToDepartment: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     movedBy: {

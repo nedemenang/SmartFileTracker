@@ -4,11 +4,16 @@ import adminAuth from '../middleware/authenticateAdmin';
 
 export default function (app) {
     // add a new user
-    app.post('/signup', adminAuth, User.create);
+    app.post('/signup', User.create);
 
     app.post('/signin', User.signIn);
 
     app.post('/signUpInitial', User.create);
+
+    // get users for department
+    app.get('/user', (req, res) => {
+        
+    });
 
     // get users for department
     app.get('/user/:departmentId', (req, res) => {

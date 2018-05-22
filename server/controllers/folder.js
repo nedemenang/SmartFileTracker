@@ -1,6 +1,7 @@
 import {Folder} from "../models";
 import {FileMovement} from "../models";
 import {FileNote} from "../models";
+import Sequelize from 'sequelize';
 
 export default {
     createFile(req, res) {
@@ -19,7 +20,7 @@ export default {
                 return Folder 
                     .create({
                         FileNo : req.body.fileNo,
-                        CreateOn : req.body.createdOn,
+                        CreateOn : Date.now(),
                         CurrentDepartment : req.body.currentDepartment,
                         FileDescription : req.body.fileDescription,
                         FileLink : req.file.path,
@@ -101,11 +102,42 @@ export default {
                     as: 'FileNotes'
                 }, {
                     model: FileMovement,
-                    attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
+                    attributes: ['id', 'DateMoved', 'movedFromDepartment','movedToDepartment','movedBy','movedTo'],
                     as: 'FileMovements'
                 }]
             })
-            .then(folder => res.status(201).send(folder))
+            .then(fileList => res.status(201).send({
+                success: true,
+                files: fileList,
+                message: 'Files fetched successfully'
+            }))
+            .catch(error => res.status(400).send(error));
+    },
+
+    listFileMovementsForFile(req, res) {
+        return FileMovement
+            .all({
+                where: {
+                    folderId: req.params.fileId
+                }})
+            .then(fileMovements => res.status(201).send({
+                success: true,
+                fileMovements: fileMovements,
+                message: 'File Movements fetched successfully'
+            }))
+            .catch(error => res.status(400).send(error));
+    },
+    listFileNotesForFile(req, res) {
+        return FileNote
+            .all({
+                where: {
+                    folderId: req.params.fileId
+                }})
+            .then(fileNotes => res.status(201).send({
+                success: true,
+                fileNotes: fileNotes,
+                message: 'File Notes fetched successfully'
+            }))
             .catch(error => res.status(400).send(error));
     },
 
@@ -141,6 +173,7 @@ export default {
                 movedTo: req.body.movedTo,
                 folderId: req.body.fileId
             })
+            .then()
             .then(fileMovement => res.status(201).send({
                 success: true,
                 data: fileMovement,
@@ -152,9 +185,9 @@ export default {
     CreateFileNote(req, res) {
         return FileNote
             .create({
-                DateCreated: req.body.dateCreated,
-                notes: req.body.notes,
-                folderId: req.body.fileId,
+                DateCreated: Date.now(),
+                notes: req.body.fileNote,
+                folderId: req.body.folderId,
                 notesBy: req.userData.userName
             })
             .then(fileNote => res.status(201).send({
@@ -164,4 +197,6 @@ export default {
             }))
             .catch(error => res.status(400).send(error))
     }
+
+
 }

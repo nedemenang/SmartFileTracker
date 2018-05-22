@@ -52,26 +52,28 @@ export default {
         const secret = process.env.SECRET_TOKEN;
         return User.findOne({
             where: {
-                UserName: req.body.userName
+                UserName: req.body.userName,
+                isActive: true
             }
         }).then((user) => {
             if (!user){
                 return res.status(401).send({
                     success: false,
-                    message: 'Authentication failed'
+                    message: 'Incorrect username or password'
                 })
             }
-            bcrypt.compare(req.body.password, user.password, (err, result) => {
+            bcrypt.compare(req.body.userPassword, user.password, (err, result) => {
                 if (err) {
                     return res.status(401).send({
                         success: false,
-                        message: 'Authentication failed'
+                        message: 'Incorrect username or password'
                     });
                 }
                 if (result) {
                   const token = jwt.sign({
                                 userName : user.UserName,
-                                role: user.role
+                                role: user.role,
+                                department: user.departmentId
                             }, secret,
                             {
                                 expiresIn: "1h"
@@ -80,6 +82,7 @@ export default {
                     return res.status(200).send({
                         success: true,
                         token: token,
+                        user: user,
                         message: 'Authentication successful'
                     })
                 }

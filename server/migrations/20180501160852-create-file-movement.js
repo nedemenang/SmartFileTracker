@@ -20,13 +20,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      movedFromDepartmentId: {
+      movedFromDepartment: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      movedToDepartmentId: {
+      movedToDepartment: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       movedBy: {
         type: Sequelize.STRING

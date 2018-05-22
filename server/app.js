@@ -3,6 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import  http from 'http';
 import dotenv from 'dotenv';
+import path from 'path';
 import indexRoute from './routes/index';
 
 dotenv.load();
@@ -15,9 +16,11 @@ app.use(logger('dev'));
 //app.use('/', publicPath);
 
 // Parse incoming requests data 
-app.use('/server/uploads', express.static('server/uploads'));
+app.use('/server/uploads', express.static(path.resolve(__dirname, './uploads')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.resolve(__dirname, '../client')));
 
 indexRoute(app);
 
@@ -28,12 +31,13 @@ app.listen(port, () => {
   console.log(`We are live on ${port}`);
 });
 
+app.get('/*', (req, res) => {
+  if (process.env.NODE_ENV !== 'production') {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+  } else {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+  }
+});
+
 export default app;
 
-// app.get('/*', (req, res) => {
-//   if (process.env.NODE_ENV !== 'production') {
-//     res.sendFile(path.join(__dirname, '../client/public/index.html'));
-//   } else {
-//     res.sendFile(path.join(__dirname, '../client/index.html'));
-//   }
-// });

@@ -15,7 +15,7 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
-                loaders: ["style-loader", "css-loader", "less-loader"]
+                loaders: ["style-loader", "css-loader"]
             },
             {
                 test: /\.(jpe?g|png|gif|otf|eot|svg|ttf|woff)$/i,
@@ -27,7 +27,7 @@ module.exports = {
         ]
     },
     output: {
-        path: parentDir + '/dist',
+        path: parentDir + '/',
         filename: 'bundle.js'
     },
     devServer: {

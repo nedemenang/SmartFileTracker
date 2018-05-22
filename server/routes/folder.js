@@ -13,24 +13,24 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'application/pdf') {
+    if(file.mimetype === 'application/pdf') {
         cb(null, true);
     } else {
-        cb(new Error('File type can only be jpeg or pdf'), false);
+        cb(new Error('File type can only be pdf'), false);
     }
 };
 
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 100
+        fileSize: 1024 * 1024 * 500
     },
     fileFilter: fileFilter
 });
 
 export default function (app) {
     // add a new file
-    app.post('/file', auth, upload.single('fileScanned'), FileController.createFile);
+    app.post('/file', auth, upload.single('uploadedFile'), FileController.createFile);
 
     // add new file note
     app.post('/fileNote', auth, FileController.CreateFileNote);
@@ -39,14 +39,16 @@ export default function (app) {
     app.post('/fileMovement', auth, FileController.CreateFileMovement);
 
     // get file movement for file
-    app.get('/fileMovement/:fileId', FileController.retrieveById);
+    app.get('/fileMovements/:fileId', FileController.listFileMovementsForFile);
 
     // get notes for file
-    app.get('/fileNotes/:fileId', FileController.retrieveById);
+    app.get('/fileNotes/:fileId', FileController.listFileNotesForFile);
 
     // get files for department
-    app.get('/fileByDepartment/:departmentId', FileController.listByDepartment);
+    app.get('/filesByDepartment/:departmentId', FileController.listByDepartment);
 
     // get single file
     app.get('/file/:fileId', FileController.retrieveById);
+
+    app.get('/fileByNo/:fileNo', FileController.retrieveByNo);
 }
