@@ -7,7 +7,7 @@ export default function (app) {
     app.post('/department', adminAuth, DepartmentController.create);
     
     // get all departments
-    app.get('/department', DepartmentController.list);
+    app.get('/departments', DepartmentController.list);
 
     // get single department
     app.get('/department/:departmentId', DepartmentController.retrieve);

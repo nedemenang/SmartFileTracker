@@ -7,7 +7,6 @@ import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
 
-
 class FileList extends Component {
 
     constructor(props) {

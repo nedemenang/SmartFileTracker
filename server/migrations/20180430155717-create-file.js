@@ -17,6 +17,10 @@ module.exports = {
       CurrentDepartment: {
         type: Sequelize.STRING
       },
+      Name: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       Createdby: {
         allowNull: false,
         type: Sequelize.STRING

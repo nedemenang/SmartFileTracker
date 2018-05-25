@@ -1,20 +1,88 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import { recieveDepartments, addFileMovement } from '../actions/index.js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import FileNoteForm from './FileNoteForm.jsx';
+import swal from 'sweetalert2';
+import toastr from 'toastr';
+import FileMovementList from '../components/FileMovementList.jsx';
+import { validateFileMovementInput } from '../validation/validation.js';
+import map from 'lodash/map';
 
 class FileMovementForm extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
      
         this.state = {
-          numPages: null,
-          pageNumber: 1,
-          modal: false
+          movedToDepartment: '',
+          movedFromDepartment: this.props.auth.currentUser.department,
+          folderId : this.props.file.selectedFile.id,
+          modal: false,
+          errors: {}
         };
-     
         this.toggle = this.toggle.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
       }
+
+      componentWillMount() {
+          this.props.recieveDepartments();
+      }
+
+      onChange(e) {
+        this.setState({[e.target.name]: e.target.value});
+    }
+
+    onSubmit(e) {
+      e.preventDefault();
+
+      document.getElementById("submitBtn").disabled = true;
+
+      this.setState({ errors: {} });
+      if (this.isValid()) {
+        swal({
+          title: 'Confirmation',
+          text: "Are you sure you want to move this document?",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+          allowOutsideClick: false,
+        }).then((result) => {
+          if (result.value) {
+            
+            this.props.addFileMovement(this.state).then((response) => {
+              if (response) {
+                toastr.success(`${this.props.message.success}`);
+                this.context.router.history.push('/file-list');
+              } else {
+                toastr.warning(`${this.props.message.error}`);
+              }
+            });
+          } else if (result.dismiss === swal.DismissReason.cancel) {
+            swal(
+              'File Movement Cancelled',
+            )
+            document.getElementById("submitBtn").disabled = false;
+          }
+      });
+    }
+  }
+
+  isValid() {
+    const { errors, isValid } = validateFileMovementInput(this.state);
+    if (!isValid) {
+      this.setState({ errors : errors });
+    }
+    return isValid;
+  }
+
       
       toggle() {
         this.setState({
@@ -23,37 +91,63 @@ class FileMovementForm extends Component {
       }
 
     render(){
+
+      const departments = this.props.department.departments.map((dept, i) =>
+        <option key={dept.name} value={dept.name}>{dept.name}</option>
+      );
+      const { errors } = this.state;
         return (
-            <div className="row">
-                    <div className="col-md-4 col-md-offset-4">
-        <Button color="primary" onClick={this.toggle}>Move File</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-          <ModalBody>
-          <legend>File Movement Form</legend>
+          
+          <div>
+          <NavBar/>
+          <div className="container-fluid">
+        <div className="row content">
+          <SideNav/>
+          <div className="jumbotron col-sm-10">
+                <div className="col-sm-8">
+        <form onSubmit={this.onSubmit}>
                 <div className="form-group">
-                    <label for="department">Move To</label>
-                    <select className="form-control" 
-                    id="department">
-                        <option>1</option>
-                        <option>2</option>
+                    <label for="movedToDepartment">Move To</label>
+                    <select onChange={this.onChange} 
+                    className="form-control"
+                    value={this.state.movedToDepartment} 
+                    id="movedToDepartment"
+                    name="movedToDepartment">
+                        <option value="" disabled>Choose Department...</option>
+                    {departments}
                     </select>
+                    {errors.movedToDepartment && (
+                        <span style={{ color: 'red' }}>{errors.movedToDepartment}</span>
+                    )}
                 </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button type="submit" color="primary" className="btn btn-primary" >Move</Button>&nbsp;
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-            </div>
-            <div className="col-md-8 col-md-offset-8">
-            <FileNoteForm/>
+                <div className="form-group" style={{'textAlign': 'right'}}>
+            <Button type="submit" id="submitBtn" color="primary" onClick={this.onSubmit} className="btn btn-primary" >Move</Button>&nbsp;
+         </div>
+         </form>
+                    <div>
+                        <FileMovementList/>
+                        </div>
             </div>
             </div>
+            </div>
+               </div>
+              <Footer/>
+          </div>      
         );
     }
 }
 
+FileMovementForm.propTypes = {
+  recieveDepartments: PropTypes.func.isRequired,
+  addFileMovement: PropTypes.func.isRequired,
+  message: PropTypes.shape({
+      success: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+  }),
+  auth: PropTypes.shape({
+      currentUser: PropTypes.object.isRequired
+  })
+};
 
 Modal.propTypes = {
     // boolean to control the state of the popover
@@ -98,5 +192,17 @@ Modal.propTypes = {
       PropTypes.string,
     ]),
     
-  }
-export default FileMovementForm
+  };
+
+  FileMovementForm.contextTypes = {
+    router: PropTypes.object.isRequired,
+};
+
+  const mapStateToProps = state => ({
+    file: state.fileManagementReducer,
+    message: state.messageHandlingReducer,
+    department: state.departmentReducer,
+    auth: state.authenticationReducer
+});
+
+export default connect(mapStateToProps, { recieveDepartments, addFileMovement })(FileMovementForm);

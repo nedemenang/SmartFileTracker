@@ -13,6 +13,7 @@ class FileForm extends Component {
         super(props);
         this.state = {
             fileNo : '',
+            fileName: '',
             fileDescription : '',
             selectedFile: null,
             currentDepartment: this.props.auth.currentUser.department,
@@ -96,6 +97,19 @@ class FileForm extends Component {
                     placeholder="File No here"/>
                     {errors.fileNo && (
                         <span style={{ color: 'red' }}>{errors.fileNo}</span>
+                    )}
+                </div>
+                <div className="form-group">
+                    <label for="fileName">File Name</label>
+                    <input type="text" 
+                    value={this.state.fileName}
+                    onChange={this.onChange}
+                    className="form-control" 
+                    name="fileName"
+                    id="fileName" 
+                    placeholder="File Name here"/>
+                    {errors.fileName && (
+                        <span style={{ color: 'red' }}>{errors.fileName}</span>
                     )}
                 </div>
                 <div className="form-group">

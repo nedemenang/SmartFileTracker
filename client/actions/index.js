@@ -11,17 +11,20 @@ export const registerUser = (user) => {
 };
 
 export const recieveUserList = () => dispatch => {
-    axios.get(`/user`)
-        .then((response) => 
-                dispatch({
-                    type: types.RECEIVE_USER_LIST,
-                    payload: response.data.userList
-                }))
-            .catch((error) => 
-                dispatch({
-                type: types.RECEIVE_ERROR,
-                payload: error.response.data.message 
-            }));
+    return (dispatch) => {
+        axios.get(`/user`)
+        .then((response) => {
+            dispatch({
+                type: types.RECEIVE_USER_LIST,
+                payload: response.data.userList
+            });
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
 
@@ -73,25 +76,35 @@ export const loginAUser = (user) => {
     };
 };
 
-export const addDepartment = (user) => {
-    return {
-        type: types.ADD_DEPARTMENT,
-        user,
+export const addDepartment = (department) => {
+    return (dispatch) => {
+        return axios.post('/department', department)
+        .then((response) => {
+                dispatch(recieveSuccess(response.data.message));
+                dispatch(recieveDepartments());
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
     };
 };
 
-export const recieveDepartments = (departments) => {
-    axios.get(`/departments`)
-        .then((response) => 
-                dispatch({
-                    type: types.RECEIVE_DEPARTMENTS,
-                    payload: response.data.departmentList
-                }))
-            .catch((error) => 
-                dispatch({
+export const recieveDepartments = () => {
+    return (dispatch) => {
+        return axios.get('/departments')
+        .then((response) => {
+            dispatch({
+                type: types.RECEIVE_DEPARTMENTS,
+                payload: response.data.departments
+            });
+            return true;
+          })
+          .catch((error) => dispatch({
                     type: types.RECEIVE_ERROR,
-                    payload: error.response.data.message
+                     payload: error
                 }));
+      };
 };
 
 export const updateDepartment = (department) => {
@@ -105,6 +118,7 @@ export const addFile = (file) => {
     let data = new FormData()
     data.append('uploadedFile', file.selectedFile);
     data.append('fileNo', file.fileNo);
+    data.append('fileName', file.fileName);
     data.append('fileDescription', file.fileDescription);
     data.append('currentDepartment', file.currentDepartment);
 
@@ -224,9 +238,16 @@ export const addFileNote = (fileNote) => {
 };
 
 export const addFileMovement = (fileMovement) => {
-    return {
-        type: types.ADD_FILE_MOVEMENT,
-        fileMovement,
+    return (dispatch) => {
+        return axios.post('/fileMovement', fileMovement)
+        .then(
+            (response) => {
+                dispatch(recieveSuccess(response.data.message));
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
     };
 };
 

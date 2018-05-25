@@ -28,7 +28,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       departmentId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.STRING
       },
       role: {
         type: Sequelize.STRING
@@ -43,15 +44,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      departmentId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Departments',
-          key: 'id',
-          as: 'departmentId',
-        },
       },
     });
   },

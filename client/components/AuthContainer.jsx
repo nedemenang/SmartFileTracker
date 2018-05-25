@@ -42,7 +42,6 @@ class AuthContainer extends Component {
   render() {
     const { Comp, path } = this.props;
     const { isAuthenticated } = this.state;
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       return <Route exact path={path} render={props => <Comp {...props} />} />;
     }

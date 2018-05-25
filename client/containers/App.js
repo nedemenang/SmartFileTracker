@@ -18,11 +18,14 @@ import LoginPage from '../components/LoginPage.jsx';
 import NavBar from '../components/NavBar.jsx';
 import RegisterUserForm from '../components/RegisterUserForm.jsx';
 import FileForm from '../components/FileForm.jsx';
+import FileNoteForm from '../components/FileNoteForm.jsx';
 import FileMovementForm from '../components/FileMovementForm.jsx';
 import FileView from '../components/Fileviewer.jsx';
 import Dashboard from '../components/Dashboard.jsx';
 import Dashboard2 from '../components/Dashboard2.jsx';
 import FileList from '../components/FileList.jsx';
+import UserForm from '../components/UserForm.jsx';
+import DepartmentForm from '../components/DepartmentForm.jsx';
 
 if (localStorage.jwtToken) {
     // Adding the function setAuthorizationToken() call to index file
@@ -46,6 +49,10 @@ export default class App extends Component {
                     <AuthContainer exact path="/file-list" Comp={FileList} />
                     <AuthContainer exact path="/new-file" Comp={FileForm} />
                     <AuthContainer exact path="/file-view" Comp={FileView} />
+                    <AuthContainer exact path="/new-user" Comp={UserForm} />
+                    <AuthContainer exact path="/new-department" Comp={DepartmentForm} />
+                    <AuthContainer exact path="/file-movements" Comp={FileMovementForm} />
+                    <AuthContainer exact path="/file-notes" Comp={FileNoteForm} />
                 </Switch>
                 </BrowserRouter>
             </Provider>

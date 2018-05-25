@@ -27,6 +27,7 @@ export default {
                             message: 'error occurred: ' + err
                         });
                     } else {
+                        console.log(req.body);
                         return User
                         .create({
                             FirstName: req.body.firstName,

@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import LoginForm from './LoginForm.jsx';
 import RegisterUserForm from '../components/RegisterUserForm.jsx';
-import {recieveUserList} from '../actions/index.js';
+import {recieveDepartments} from '../actions/index.js';
 import NavBar from '../components/NavBar.jsx';
-import UserItem from '../components/UserItem.jsx';
-import PropTypes from 'prop-types';
+import DepartmentItem from '../components/DepartmentItem.jsx';
 
-class UserList extends Component {
+class DepartmentList extends Component {
     constructor(props) {
         super(props);
     }
 
     componentWillMount() {
       if(this.props.currentUser) {
-        this.props.recieveUserList();
+        this.props.recieveDepartments();
       }
     }
 
@@ -25,18 +25,14 @@ class UserList extends Component {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>User Name</th>
-                  <th>Department</th>
-                  <th>Role</th>
+                  <th>Department Name</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
               {
-                  this.props.users.map((userItem, i) => (
-                    <UserItem userItem={userItem} key={i}/>
+                  this.props.departments.map((departmentItem, i) => (
+                    <DepartmentItem departmentItem={departmentItem} key={i}/>
                 ))
                 }
               </tbody>
@@ -46,13 +42,13 @@ class UserList extends Component {
     }
 }
 
-UserList.propTypes = {
-  recieveUserList: PropTypes.func.isRequired,
+DepartmentList.propTypes = {
+  recieveDepartments: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
       currentUser: state.authenticationReducer.currentUser,
-      users: state.userReducer.users
+      departments: state.departmentReducer.departments
 });
 
-export default connect(mapStateToProps, {recieveUserList})(UserList);
+export default connect(mapStateToProps, {recieveDepartments})(DepartmentList);

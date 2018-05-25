@@ -14,12 +14,5 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.STRING
     }
   });
-  Department.associate = function (models) {
-    // associations can be defined here
-    Department.hasMany(models.User, {
-      foreignKey: 'departmentId',
-      as: 'Users',
-    });
-  };
   return Department;
 }

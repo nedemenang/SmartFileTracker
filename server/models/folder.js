@@ -8,6 +8,10 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
+    Name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     Createdby: {
       type: DataTypes.STRING,
       allowNull: false
@@ -17,7 +21,7 @@ export default function (sequelize, DataTypes) {
       allowNull: false
     },
     CurrentDepartment: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     FileDescription: {
       type: DataTypes.STRING

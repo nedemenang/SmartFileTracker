@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { addFileNote } from '../actions/index.js';
+import FileNoteList from '../components/FileNoteList.jsx';
 import { validateFileNoteInput } from '../validation/validation.js';
 import toastr from 'toastr';
 
@@ -25,7 +26,6 @@ class FileNoteForm extends Component {
     }
 
     onSubmit(e) {
-      console.log(this.state);
       e.preventDefault();
       this.setState({ errors: {} });
       if (this.isValid()) {
@@ -56,30 +56,40 @@ class FileNoteForm extends Component {
     render(){
       const { errors } = this.state;
         return (
-                    <div>
-        <Button color="primary" onClick={this.toggle}>Minute</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}><legend>File Note Form</legend></ModalHeader>
-          <ModalBody>
+          <div>
+          <NavBar/>
+          <div className="container-fluid">
+        <div className="row content">
+          <SideNav/>
+          <div className="jumbotron col-sm-10">
+                <div className="col-sm-8">
+        <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                 <label for="lastName">File Notes</label>
                     <textarea className="form-control" 
                     id="fileSummary"
                     name="fileNote"
                     id="fileNote"
+                    value={this.state.fileNote}
                     onChange={this.onChange}  
                     rows="5"/>
-                    {errors.fileNo && (
-                        <span style={{ color: 'red' }}>{errors.fileNo}</span>
+                    {errors.fileNote && (
+                        <span style={{ color: 'red' }}>{errors.fileNote}</span>
                     )}
                 </div>
-          </ModalBody>
-          <ModalFooter>
+                <div className="form-group" style={{'textAlign': 'right'}}>
             <Button type="submit" color="primary" onClick={this.onSubmit} className="btn btn-primary" >Save</Button>&nbsp;
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      </div> 
+            </div>
+         </form>
+                    <div>
+                        <FileNoteList/>
+                        </div>
+            </div>
+            </div>
+            </div>
+               </div>
+              <Footer/>
+          </div>      
         );
     }
 }

@@ -7,7 +7,7 @@ export default {
         return Department
             .findOne({
                 where: {
-                    name: req.body.name
+                    name: req.body.departmentName
                 }
             }).then((departmentExists) => {
                 if(departmentExists) {
@@ -18,12 +18,12 @@ export default {
                 }
                 return Department
                     .create({
-                        name: req.body.name,
+                        name: req.body.departmentName,
                         createdBy: req.userData.userName
                     })
                     .then(department => res.status(201).send({
                         success: true,
-                        data: department,
+                        department: department,
                         message: 'Department successfully created'
                     }))
                     .catch(error => res.status(400).send(error));
@@ -39,7 +39,7 @@ export default {
             })
             .then(departments => res.status(200).send({
                 success: true, 
-                data: departments,
+                departments: departments,
                 message: 'Departments fetched successfully'
             }))
             .catch(error => res.status(400).send(error))
@@ -67,12 +67,7 @@ export default {
 
     update(req, res) {
         return Department
-            .findById(req.body.deparmentId, {
-                include: [{
-                    model: User,
-                    as: 'Users',
-                }],
-            })
+            .findById(req.body.deparmentId)
             .then(department => {
                 if (!department) {
                     return res.status(404).send({
@@ -81,10 +76,12 @@ export default {
                 }
                 return department
                     .update({
-                        name: req.body.name || department.name,
-                        isActive: req.body.isActive || department.isActive
+                        isActive: false
                     })
-                    .then((department) => res.status(200).send(department)) // Send back the updated department.
+                    .then((department) => res.status(200).send({
+                        department: department,
+                        success: true,
+                        message: 'Department deactivated!' })) 
                     .catch((error) => res.status(400).send(error));
             })
             .catch((error) => res.status(400).send(error));

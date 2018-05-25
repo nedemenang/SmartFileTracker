@@ -13,6 +13,10 @@ export default function (sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
+    departmentId: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
     password: {
       allowNull: false,
       type: DataTypes.STRING
@@ -29,11 +33,6 @@ export default function (sequelize, DataTypes) {
       type: DataTypes.STRING
     }
   }, {});
-  User.associate = function (models) {
-    // associations can be defined here
-    User.belongsTo(models.Department, {
-      foreignKey: 'departmentId'
-    });
-  };
+
   return User;
 }

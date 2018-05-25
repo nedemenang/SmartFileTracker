@@ -21,6 +21,7 @@ export default {
                     .create({
                         FileNo : req.body.fileNo,
                         CreateOn : Date.now(),
+                        Name: req.body.fileName,
                         CurrentDepartment : req.body.currentDepartment,
                         FileDescription : req.body.fileDescription,
                         FileLink : req.file.path,
@@ -164,22 +165,42 @@ export default {
     },
 
     CreateFileMovement(req, res) {
-        return FileMovement
+        if (req.body.movedFromDepartment === req.body.movedToDepartment) {
+            return res.status(400).send({
+                message: 'Please select different department to move to!'
+            });
+        }
+        return Folder
+        .findById(req.body.folderId)
+        .then(folder => {
+            if(!folder) {
+                return res.status(404).send({
+                        message: 'Folder not found'
+                })
+            }
+            FileMovement
             .create({
-                DateMoved: req.body.dateMoved,
-                movedFromDepartmentId: req.body.movedFromDepartmentId,
-                movedToDepartmentId: req.body.movedToDepartmentId,
+                DateMoved: Date.now(),
+                movedFromDepartment: req.body.movedFromDepartment,
+                movedToDepartment: req.body.movedToDepartment,
                 movedBy: req.userData.userName,
-                movedTo: req.body.movedTo,
-                folderId: req.body.fileId
+                folderId: req.body.folderId
             })
-            .then()
-            .then(fileMovement => res.status(201).send({
-                success: true,
-                data: fileMovement,
-                message: 'File successfully moved'
-            }))
-            .catch(error => res.status(400).send(error));
+            .then((fileMovement) => {
+                folder
+                    .update({
+                        CurrentDepartment: req.body.movedToDepartment || folder.currentDepartment
+                    })
+                    .then(() => res.status(200).send({
+                        success: true,
+                        message: 'File moved successfully',
+                        fileMovement: fileMovement
+                    }))
+                    .catch((error) => res.status(400).send(error))
+            })
+            .catch((error) => res.status(400).send(error))
+        })
+        .catch((error) => res.status(400).send(error)) 
     },
 
     CreateFileNote(req, res) {

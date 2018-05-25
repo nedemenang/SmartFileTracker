@@ -26,7 +26,6 @@ class FileViewer extends Component {
       pageArrays.push(i);
     }
     const { selectedFile } = this.props;
-    console.log(selectedFile);
     return (
       <div>
       <NavBar/>
@@ -55,6 +54,7 @@ class FileViewer extends Component {
 
 const mapStateToProps = state => ({
   selectedFile: state.fileManagementReducer.selectedFile,
+  department: state.departmentReducer.department
 });
 
 export default connect(mapStateToProps, {})(FileViewer);
