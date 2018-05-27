@@ -16,14 +16,23 @@ class FileMovementList extends Component {
 
     componentWillMount() {
       if(this.props.selectedFile) {
-        this.props.recieveFileMovementForFile(selectedFile);
+        this.props.recieveFileMovementForFile(this.props.selectedFile.id);
       }
     }
 
     render(){
         return (
             <div>
+            <h2>FILE MOVEMENT LOG</h2>
               <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Date Moved</th>
+                  <th>Moved From</th>
+                  <th>Moved To</th>
+                  <th>Moved By</th>
+                </tr>
+              </thead>
               <tbody>
               {
                   this.props.fileMovements.map((fileMovement, i) => (
@@ -42,7 +51,8 @@ FileMovementList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-      files: state.fileManagementReducer.files  
+    selectedFile: state.fileManagementReducer.selectedFile,
+    fileMovements: state.fileManagementReducer.fileMovements
 });
 
 export default connect(mapStateToProps, {recieveFileMovementForFile})(FileMovementList);

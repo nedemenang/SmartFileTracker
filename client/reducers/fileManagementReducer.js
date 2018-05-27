@@ -61,13 +61,13 @@ export default (state = initialState, action) => {
         case types.RECEIVE_FILE_MOVEMENT_FOR_FILE:
             return {
                 ...state,
-                file: action.payload
+                fileMovements: action.payload
             };
 
         case types.RECIEVE_FILE_NOTE_FOR_FILE:
             return {
                 ...state,
-                file: action.payload
+                fileNotes: action.payload
             };
 
         case types.SELECT_FILE:

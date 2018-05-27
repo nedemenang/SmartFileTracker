@@ -4,8 +4,11 @@ import {connect} from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { addFileNote } from '../actions/index.js';
 import FileNoteList from '../components/FileNoteList.jsx';
+import SideNavFileDashboard from '../components/SidenavFileDashboard.jsx';
 import { validateFileNoteInput } from '../validation/validation.js';
 import toastr from 'toastr';
+import NavBar from './NavBar.jsx';
+import Footer from './Footer.jsx';
 
 class FileNoteForm extends Component {
     constructor(props) {
@@ -60,7 +63,7 @@ class FileNoteForm extends Component {
           <NavBar/>
           <div className="container-fluid">
         <div className="row content">
-          <SideNav/>
+          <SideNavFileDashboard/>
           <div className="jumbotron col-sm-10">
                 <div className="col-sm-8">
         <form onSubmit={this.onSubmit}>
@@ -104,52 +107,6 @@ FileNoteForm.propTypes = {
       currentUser: PropTypes.object.isRequired
   })
 };
-
-
-Modal.propTypes = {
-    // boolean to control the state of the popover
-    isOpen:  PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    // if modal should be centered vertically in viewport
-    centered: PropTypes.bool,
-    // corresponds to bootstrap's modal sizes, ie. 'lg' or 'sm'
-    size: PropTypes.string,
-    // callback for toggling isOpen in the controlling component
-    toggle:  PropTypes.func,
-    role: PropTypes.string, // defaults to "dialog"
-    // used to reference the ID of the title element in the modal
-    labelledBy: PropTypes.string,
-    keyboard: PropTypes.bool,
-    // control backdrop, see http://v4-alpha.getbootstrap.com/components/modal/#options
-    backdrop: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.oneOf(['static'])
-    ]),
-    // allows for a node/componet to exist next to the modal (outside of it). Useful for external close buttons
-    // external: PropTypes.node,
-    // called on componentDidMount
-    onEnter: PropTypes.func,
-    // called on componentWillUnmount
-    onExit: PropTypes.func,
-    // called when done transitioning in
-    onOpened: PropTypes.func,
-    // called when done transitioning out
-    onClosed: PropTypes.func,
-    className: PropTypes.string,
-    wrapClassName: PropTypes.string,
-    modalClassName: PropTypes.string,
-    backdropClassName: PropTypes.string,
-    contentClassName: PropTypes.string,
-    // boolean to control whether the fade transition occurs (default: true)
-    fade: PropTypes.bool,
-    cssModule: PropTypes.object,
-    // zIndex defaults to 1000.
-    zIndex: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
-    
-  };
 
   const mapStateToProps = state => ({
     file: state.fileManagementReducer,

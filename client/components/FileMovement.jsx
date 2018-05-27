@@ -11,11 +11,10 @@ class FileMovement extends Component {
         const { fileMovement } = this.props;
         return (
             <tr>
-                  <td>{fileMovement.MovedFrom} to {fileMovement.MovedTo} <br/>
-                  <p><small>
-                        {fileNote.DateMoved} - {fileNote.MovedBy}
-                        </small></p>
-                  </td>
+                <td>{fileMovement.DateMoved}</td>
+                  <td>{fileMovement.movedFromDepartment} </td>
+                  <td> {fileMovement.movedToDepartment} </td>
+                       <td>{fileMovement.movedBy}</td>
                 </tr>
         );
     }

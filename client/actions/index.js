@@ -1,12 +1,20 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import {persistor} from '../store/store.js'; 
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import types from '../types/types';
 
 export const registerUser = (user) => {
-    return {
-        type: types.REGISTER_USER,
-        user
+    return (dispatch) => {
+        return axios.post('/signup', user)
+        .then((response) => {
+                dispatch(recieveSuccess(response.data.message));
+                dispatch(recieveUserList());
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
     };
 };
 
@@ -47,6 +55,7 @@ export const logOut = () => {
       localStorage.removeItem('jwtToken');
       setAuthorizationToken(false);
       dispatch(setCurrentUser(jwt.decode({})));
+      persistor.purge()
     };
   };
 
@@ -144,7 +153,7 @@ export const updateFile = (file) => {
 };
 
 export const recieveFiles = (files, dispatch) => {
-    axios.get(`files`)
+    axios.get(`/files`)
         .then((response) => 
             dispatch({
                 type: types.RECIEVE_FILES,
@@ -229,6 +238,7 @@ export const addFileNote = (fileNote) => {
         .then(
             (response) => {
                 dispatch(recieveSuccess(response.data.message));
+                dispatch(recieveFileNoteForFile(fileNote.folderId))
                 return true;
         })
         .catch((error) => {
@@ -243,6 +253,7 @@ export const addFileMovement = (fileMovement) => {
         .then(
             (response) => {
                 dispatch(recieveSuccess(response.data.message));
+                dispatch(recieveFileMovementForFile(fileMovement.folderId))
                 return true;
         })
         .catch((error) => {
@@ -251,32 +262,38 @@ export const addFileMovement = (fileMovement) => {
     };
 };
 
-export const recieveFileNoteForFile = (file) => {
-    axios.get(`/fileMovements/${file.fileId}`)
-        .then((response) => 
-                dispatch({
-                    type: types.RECEIVE_FILE_MOVEMENT_FOR_FILE,
-                    payload: response.data.userList
-                }))
-            .catch((error) => 
-                dispatch({
-                type: types.RECEIVE_ERROR,
-                payload: error.response.data.message 
-            }));
+export const recieveFileNoteForFile = (selectedFileId) => {
+    return (dispatch) => {
+        return axios.get(`/fileNotes/${selectedFileId}`)
+        .then((response) => {
+            dispatch({
+                type: types.RECIEVE_FILE_NOTE_FOR_FILE,
+                payload: response.data.fileNotes
+            });
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
-export const recieveFileMovementForFile = (fileMovement) => {
-    axios.get(`/fileNotes/${file.fileId}`)
-        .then((response) => 
-                dispatch({
-                    type: types.RECEIVE_FILE_MOVEMENT_FOR_FILE,
-                    payload: response.data.userList
-                }))
-            .catch((error) => 
-                dispatch({
-                type: types.RECEIVE_ERROR,
-                payload: error.response.data.message 
-            }));
+export const recieveFileMovementForFile = (selectedFileId) => {
+    return (dispatch) => {
+        return axios.get(`/fileMovements/${selectedFileId}`)
+        .then((response) => {
+            dispatch({
+                type: types.RECEIVE_FILE_MOVEMENT_FOR_FILE,
+                payload: response.data.fileMovements
+            });
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
 export const searchFile = (fileSearch) => {

@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import '../vendors/bootstrap.min.css';
 import '../vendors/css/customCss.css';
 import '../vendors/js/jquery-3.3.1.min.js';
-import store from '../store/store.js';
+import {store, persistor} from '../store/store.js';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import jwt from 'jsonwebtoken';
@@ -27,6 +28,7 @@ import FileList from '../components/FileList.jsx';
 import UserForm from '../components/UserForm.jsx';
 import DepartmentForm from '../components/DepartmentForm.jsx';
 
+
 if (localStorage.jwtToken) {
     // Adding the function setAuthorizationToken() call to index file
     setAuthorizationToken(localStorage.jwtToken);
@@ -34,10 +36,13 @@ if (localStorage.jwtToken) {
     store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
   }
 
+
+
 export default class App extends Component {
     render () {
         return (
             <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
                 <BrowserRouter>
                 <Switch>
                     <Route exact path="/" component={isAuthenticated(LoginPage)} />
@@ -55,6 +60,7 @@ export default class App extends Component {
                     <AuthContainer exact path="/file-notes" Comp={FileNoteForm} />
                 </Switch>
                 </BrowserRouter>
+                </PersistGate>
             </Provider>
         );
     }

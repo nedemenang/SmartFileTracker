@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Document, Page } from 'react-pdf/dist/entry.webpack';
 import FileMovementForm from './FileMovementForm.jsx';
 import FileNoteForm from './FileNoteForm.jsx';
+import SideNavFileDashboard from '../components/SidenavFileDashboard.jsx';
 import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
@@ -31,10 +32,9 @@ class FileViewer extends Component {
       <NavBar/>
               <div className="container-fluid">
             <div className="row content">
-              <SideNav/>
+              <SideNavFileDashboard/>
             <div className="col-sm-10">
                     <div className="jumbotron col-sm-8">
-                    <FileMovementForm/>
       <Document file={'/' + selectedFile.FileLink} onLoadSuccess={this.onDocumentLoad}
         >
         {

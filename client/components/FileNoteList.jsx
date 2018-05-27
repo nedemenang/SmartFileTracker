@@ -16,14 +16,22 @@ class FileNoteList extends Component {
 
     componentWillMount() {
       if(this.props.selectedFile) {
-        this.props.recieveFileNoteForFile(selectedFile);
+        this.props.recieveFileNoteForFile(this.props.selectedFile.id);
       }
     }
 
     render(){
         return (
             <div>
+            <h2>FILE NOTES LOG</h2>
               <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Notes</th>
+                  <th>Notes By</th>
+                </tr>
+              </thead>
               <tbody>
               {
                   this.props.fileNotes.map((fileNote, i) => (
@@ -42,7 +50,8 @@ FileNoteList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-      files: state.fileManagementReducer.files
+      fileNotes: state.fileManagementReducer.fileNotes,
+      selectedFile: state.fileManagementReducer.selectedFile
 });
 
 export default connect(mapStateToProps, {recieveFileNoteForFile})(FileNoteList);

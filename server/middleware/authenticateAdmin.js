@@ -26,7 +26,6 @@ export default (req, res, next) => {
       next();
     });
   } else {
-    // forbidden without token
     return res.status(403).send({
       success: false,
       message: 'no token provided'

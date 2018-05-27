@@ -7,6 +7,7 @@ import SideNav from './Sidenav.jsx';
 import { registerUser } from '../actions/index.js';
 import { validateUserInput } from '../validation/validation.js';
 import toastr from 'toastr';
+import UserList from '../components/Userlist.jsx';
 
 class UserForm extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class UserForm extends Component {
             lastName: '',
             userName : '',
             department: '',
-            role: ''
+            role: '', 
+            errors: {}
         }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -41,7 +43,7 @@ class UserForm extends Component {
     }
 
     isValid() {
-        const { errors, isValid } = validateFileInput(this.state);
+        const { errors, isValid } = validateUserInput(this.state);
         if (!isValid) {
           this.setState({ errors : errors });
         }
@@ -49,7 +51,7 @@ class UserForm extends Component {
       }
 
     render(){
-        const departments = this.props.department.departments.map((dept, i) =>
+        const departments = this.props.departments.map((dept, i) =>
         <option key={dept.name} value={dept.name}>{dept.name}</option>
       );
         const { errors } = this.state;
@@ -62,7 +64,7 @@ class UserForm extends Component {
             <div className="jumbotron col-sm-10">
                     <div className="col-sm-8">
             <form onSubmit={this.onSubmit}>
-                <legend>File Form</legend>
+                <legend>User Registration Form</legend>
                 <div className="form-group">
                     <label for="firstName">First Name</label>
                     <input type="text" 
@@ -126,7 +128,6 @@ class UserForm extends Component {
                         <option value="" disabled>Choose Role...</option>
                         <option value="admin">Administrator</option>
                         <option value="user">User</option>
-                    {roles}
                     </select>
                     {errors.role && (
                         <span style={{ color: 'red' }}>{errors.role}</span>
@@ -136,6 +137,9 @@ class UserForm extends Component {
                     <button type="submit" class="btn btn-primary" >Submit</button>
                 </div>
             </form>
+            <div>
+                        <UserList/>
+                        </div>
             </div>
             </div>
                </div>
@@ -161,7 +165,8 @@ UserForm.propTypes = {
 const mapStateToProps = state => ({
     user: state.userReducer,
     message: state.messageHandlingReducer,
-    auth: state.authenticationReducer
+    auth: state.authenticationReducer, 
+    departments: state.departmentReducer.departments
 });
   
 export default connect(mapStateToProps, { registerUser })(UserForm);

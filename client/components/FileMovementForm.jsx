@@ -8,12 +8,14 @@ import swal from 'sweetalert2';
 import toastr from 'toastr';
 import FileMovementList from '../components/FileMovementList.jsx';
 import { validateFileMovementInput } from '../validation/validation.js';
+import NavBar from './NavBar.jsx';
+import Footer from './Footer.jsx';
+import SideNavFileDashboard from '../components/SidenavFileDashboard.jsx';
 import map from 'lodash/map';
 
 class FileMovementForm extends Component {
     constructor(props) {
         super(props);
-     
         this.state = {
           movedToDepartment: '',
           movedFromDepartment: this.props.auth.currentUser.department,
@@ -21,7 +23,6 @@ class FileMovementForm extends Component {
           modal: false,
           errors: {}
         };
-        this.toggle = this.toggle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
       }
@@ -80,15 +81,9 @@ class FileMovementForm extends Component {
     if (!isValid) {
       this.setState({ errors : errors });
     }
+    document.getElementById("submitBtn").disabled = false;
     return isValid;
   }
-
-      
-      toggle() {
-        this.setState({
-          modal: !this.state.modal
-        });
-      }
 
     render(){
 
@@ -102,7 +97,7 @@ class FileMovementForm extends Component {
           <NavBar/>
           <div className="container-fluid">
         <div className="row content">
-          <SideNav/>
+          <SideNavFileDashboard/>
           <div className="jumbotron col-sm-10">
                 <div className="col-sm-8">
         <form onSubmit={this.onSubmit}>
@@ -125,7 +120,7 @@ class FileMovementForm extends Component {
          </div>
          </form>
                     <div>
-                        <FileMovementList/>
+                        <FileMovementList selectedFile={this.props.file.selectedFile}/>
                         </div>
             </div>
             </div>
@@ -149,57 +144,13 @@ FileMovementForm.propTypes = {
   })
 };
 
-Modal.propTypes = {
-    // boolean to control the state of the popover
-    isOpen:  PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    // if modal should be centered vertically in viewport
-    centered: PropTypes.bool,
-    // corresponds to bootstrap's modal sizes, ie. 'lg' or 'sm'
-    size: PropTypes.string,
-    // callback for toggling isOpen in the controlling component
-    toggle:  PropTypes.func,
-    role: PropTypes.string, // defaults to "dialog"
-    // used to reference the ID of the title element in the modal
-    labelledBy: PropTypes.string,
-    keyboard: PropTypes.bool,
-    // control backdrop, see http://v4-alpha.getbootstrap.com/components/modal/#options
-    backdrop: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.oneOf(['static'])
-    ]),
-    // allows for a node/componet to exist next to the modal (outside of it). Useful for external close buttons
-    // external: PropTypes.node,
-    // called on componentDidMount
-    onEnter: PropTypes.func,
-    // called on componentWillUnmount
-    onExit: PropTypes.func,
-    // called when done transitioning in
-    onOpened: PropTypes.func,
-    // called when done transitioning out
-    onClosed: PropTypes.func,
-    className: PropTypes.string,
-    wrapClassName: PropTypes.string,
-    modalClassName: PropTypes.string,
-    backdropClassName: PropTypes.string,
-    contentClassName: PropTypes.string,
-    // boolean to control whether the fade transition occurs (default: true)
-    fade: PropTypes.bool,
-    cssModule: PropTypes.object,
-    // zIndex defaults to 1000.
-    zIndex: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
-    
-  };
-
   FileMovementForm.contextTypes = {
     router: PropTypes.object.isRequired,
 };
 
   const mapStateToProps = state => ({
     file: state.fileManagementReducer,
+    selectedFile: state.fileManagementReducer.selectedFile,
     message: state.messageHandlingReducer,
     department: state.departmentReducer,
     auth: state.authenticationReducer

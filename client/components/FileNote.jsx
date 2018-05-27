@@ -11,11 +11,9 @@ class FileNote extends Component {
         const { fileNote } = this.props;
         return (
             <tr>
-                  <td>{fileNote.notes} <br/>
-                  <p><small>
-                        {fileNote.notesBy} - {fileNote.DateCreated}
-                        </small></p>
-                  </td>
+                <td>{fileNote.DateCreated}</td>
+                  <td>{fileNote.notes} </td>
+                  <td> {fileNote.notesBy} </td>
                 </tr>
         );
     }

@@ -4,7 +4,7 @@ import adminAuth from '../middleware/authenticateAdmin';
 
 export default function (app) {
     // add a new user
-    app.post('/signup', User.create);
+    app.post('/signup', adminAuth, User.create);
 
     app.post('/signin', User.signIn);
 
