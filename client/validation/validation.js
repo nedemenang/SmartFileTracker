@@ -59,6 +59,24 @@ export function validateUserInput(inputData) {
     };
 }
 
+export function validatePasswordResetInput(inputData) {
+    const errors = {};
+    if (Validator.isEmpty(inputData.password)) {
+        errors.password = 'This field is required';
+    }
+    if (Validator.isEmpty(inputData.confirmPassword)) {
+        errors.confirmPassword = 'This field is required';
+    }
+    if (inputData.password !== inputData.confirmPassword) {
+        errors.password = 'These fields do not match';
+        errors.confirmPassword = 'These fields do not match';
+    }
+    return {
+        errors,
+        isValid: isEmpty(errors)
+    };
+}
+
 export function validateFileNoteInput(inputData) {
     const errors = {};
     if (Validator.isEmpty(inputData.fileNote)) {

@@ -10,6 +10,7 @@ class Sidenav extends Component {
               <div className="col-sm-2 sidenav1">
                 <ul className="nav nav-pills flex-column">
                   <li className="nav-item"><a className="nav-link" href="/new-file">New File</a></li>
+                  <li className="nav-item"><a className="nav-link" href="/password-reset">Password Reset</a></li>
                 </ul><br/>
               </div>
         );

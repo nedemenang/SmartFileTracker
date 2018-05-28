@@ -18,9 +18,10 @@ export const registerUser = (user) => {
     };
 };
 
-export const recieveUserList = () => dispatch => {
+export const recieveUserList = () => {
+    
     return (dispatch) => {
-        axios.get(`/user`)
+        return axios.get('/users')
         .then((response) => {
             dispatch({
                 type: types.RECEIVE_USER_LIST,
@@ -36,11 +37,23 @@ export const recieveUserList = () => dispatch => {
 };
 
 
-export const updateUser = (user) => {
-    return {
-        type: types.UPDATE_USER,
-        payload: user,
-    };
+export const deactivateUser = (userItem) => {
+    return (dispatch) => {
+        return axios.put('/user', userItem)
+        .then((response) => {
+            dispatch({
+                type: types.DEACTIVATE_USER,
+                payload: response.data.user
+            });
+            dispatch(recieveSuccess(response.data.message));
+            dispatch(recieveUserList());
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
 export const loginUser = (user) => {
@@ -99,6 +112,20 @@ export const addDepartment = (department) => {
     };
 };
 
+export const passwordReset = (user) => {
+    return (dispatch) => {
+        return axios.put('/passwordreset', user)
+        .then((response) => {
+                dispatch(recieveSuccess(response.data.message));
+                dispatch(logOut())
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
+    };
+};
+
 export const recieveDepartments = () => {
     return (dispatch) => {
         return axios.get('/departments')
@@ -116,11 +143,24 @@ export const recieveDepartments = () => {
       };
 };
 
-export const updateDepartment = (department) => {
-    return {
-        type: types.UPDATE_DEPARTMENT,
-        department,
-    };
+export const updateDepartment = (departmentItem) => {
+    return (dispatch) => {
+        return axios.put('/department', departmentItem)
+        .then((response) => {
+            dispatch({
+                type: types.UPDATE_DEPARTMENT,
+                payload: response.data.department
+            });
+            console.log(response.data.message);
+            dispatch(recieveSuccess(response.data.message));
+            dispatch(recieveDepartments());
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
 export const addFile = (file) => {

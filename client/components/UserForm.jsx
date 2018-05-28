@@ -137,6 +137,7 @@ class UserForm extends Component {
                     <button type="submit" class="btn btn-primary" >Submit</button>
                 </div>
             </form>
+            <div><h2>USER LOG</h2></div>
             <div>
                         <UserList/>
                         </div>

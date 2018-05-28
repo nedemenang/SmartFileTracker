@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import { updateDepartment } from '../actions/index.js';
 import swal from 'sweetalert2';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 
 class DepartmentItem extends Component {
     constructor(props) {
         super(props);
-    }
 
+        this.onClick = this.onClick.bind(this);
+    }
+ß
     onClick(e) {
         e.preventDefault();
         swal({
@@ -68,7 +71,8 @@ DepartmentItem.propTypes = {
 
   
 const mapStateToProps = state => ({
-    user: state.userReducer
+    user: state.userReducer,
+    message: state.messageHandlingReducer
 });
 
 export default connect(mapStateToProps, {updateDepartment})(DepartmentItem);

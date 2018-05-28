@@ -67,7 +67,11 @@ export default {
 
     update(req, res) {
         return Department
-            .findById(req.body.deparmentId)
+            .findOne({
+                where: {
+                    name: req.body.name
+                }
+            })
             .then(department => {
                 if (!department) {
                     return res.status(404).send({

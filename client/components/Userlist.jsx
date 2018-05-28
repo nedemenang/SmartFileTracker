@@ -11,7 +11,6 @@ class UserList extends Component {
     constructor(props) {
         super(props);
     }
-
     componentWillMount() {
       if(this.props.currentUser) {
         this.props.recieveUserList();
@@ -30,6 +29,7 @@ class UserList extends Component {
                   <th>User Name</th>
                   <th>Department</th>
                   <th>Role</th>
+                  <th>Is Active?</th>
                   <th></th>
                 </tr>
               </thead>

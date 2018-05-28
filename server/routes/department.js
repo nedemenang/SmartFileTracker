@@ -13,5 +13,5 @@ export default function (app) {
     app.get('/department/:departmentId', DepartmentController.retrieve);
 
     // edit single department
-    app.put('/department', adminAuth, DepartmentController.update);
+    app.put('/department', DepartmentController.update);
 }

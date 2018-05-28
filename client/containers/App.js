@@ -27,6 +27,7 @@ import Dashboard2 from '../components/Dashboard2.jsx';
 import FileList from '../components/FileList.jsx';
 import UserForm from '../components/UserForm.jsx';
 import DepartmentForm from '../components/DepartmentForm.jsx';
+import PasswordReset from '../components/PasswordReset.jsx';
 
 
 if (localStorage.jwtToken) {
@@ -49,6 +50,7 @@ export default class App extends Component {
                     <Route
                     path="/auth/:login?"
                     component={isAuthenticated(LoginPage)}
+                    
                     />
                     {/* <Route exact path="/resetPassword" component={ResetPassword} /> */}
                     <AuthContainer exact path="/file-list" Comp={FileList} />
@@ -58,6 +60,8 @@ export default class App extends Component {
                     <AuthContainer exact path="/new-department" Comp={DepartmentForm} />
                     <AuthContainer exact path="/file-movements" Comp={FileMovementForm} />
                     <AuthContainer exact path="/file-notes" Comp={FileNoteForm} />
+                    <AuthContainer exact path="/password-reset" Comp={PasswordReset} />
+
                 </Switch>
                 </BrowserRouter>
                 </PersistGate>

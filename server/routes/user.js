@@ -6,22 +6,14 @@ export default function (app) {
     // add a new user
     app.post('/signup', adminAuth, User.create);
 
+    app.put('/passwordreset', User.passwordReset);
+
     app.post('/signin', User.signIn);
 
     app.post('/signUpInitial', User.create);
 
-    // get users for department
-    app.get('/user', (req, res) => {
-        
-    });
+    app.get('/users', User.list);
 
-    // get users for department
-    app.get('/user/:departmentId', (req, res) => {
+    app.put('/user', adminAuth, User.update);
 
-    });
-
-    // get single user
-    app.get('/user/:userId', (req, res) => {
-
-    });
 }
