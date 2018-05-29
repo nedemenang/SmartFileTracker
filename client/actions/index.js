@@ -18,14 +18,14 @@ export const registerUser = (user) => {
     };
 };
 
-export const recieveUserList = () => {
+export const recieveUserList = (offset=0) => {
     
     return (dispatch) => {
-        return axios.get('/users')
+        return axios.get(`/users?offset=${offset}`)
         .then((response) => {
             dispatch({
                 type: types.RECEIVE_USER_LIST,
-                payload: response.data.userList
+                payload: response.data
             });
             return true;
           })

@@ -3,6 +3,7 @@ import {Department} from '../models';
 import {User} from '../models';
 import {Role} from '../models';
 import jwt from 'jsonwebtoken';
+import paginate from '../middleware/paginate'; 
 
 
 export default {
@@ -50,11 +51,15 @@ export default {
 
     list(req, res) {
         return User
-            .all()
+            .findAndCountAll({
+                offset: req.query.offset * 2,
+                limit: 2
+            })
             .then(users => res.status(200).send({
                 success: true, 
                 userList: users,
-                message: 'users fetched successfully'
+                message: 'users fetched successfully',
+                paginateData: paginate(users.count, 2, req.query.offset * 2)
             }))
             .catch(error => res.status(400).send(error))
     },

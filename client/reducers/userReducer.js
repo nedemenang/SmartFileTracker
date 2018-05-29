@@ -3,6 +3,7 @@ import types from '../types/types';
 const initialState = {
     users: [],
     selectedUser:{},
+    paginateData: {},
     user: {}
 }
 
@@ -12,13 +13,15 @@ export default (state = initialState, action) => {
         case types.REGISTER_USER: 
             return {
                 ...state,
-                user: action.payload
+                user: action.payload.userList.rows,
+                paginateData: action.payload.paginateData
             };
 
         case types.RECEIVE_USER_LIST:
         return {
             ...state,
             users: action.payload
+
         };
 
         case types.UPDATE_USER:
