@@ -7,7 +7,7 @@
     "start:dev": "babel-node ./server/app.js",
     "startdev": "NODE_ENV=development npm run dev-build & nodemon ./server/app.js -w ./server --exec babel-node",
     "dev-build": "webpack --config ./webpack/webpack.dev.config.js -w",
-    "start": "NODE_ENV=production node ./dist/server/app.js",
+    "start": "node ./dist/server/app.js",
     "build-client": "webpack --config ./webpack/webpack.config.js",
     "build-server": "babel ./server --out-dir ./dist/server --copy-files",
     "dev": "./node_modules/.bin/webpack-dev-server --config ./webpack/webpack.dev.config.js",
