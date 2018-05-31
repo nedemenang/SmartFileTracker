@@ -6,6 +6,8 @@ import FileNote from './FileNote.jsx';
 import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
+import 'react-table/react-table.css';
+import ReactTable from "react-table";
 
 
 class FileNoteList extends Component {
@@ -21,25 +23,24 @@ class FileNoteList extends Component {
     }
 
     render(){
+        const columns = [{
+            Header: 'Date',
+            accessor: 'DateCreated' 
+          }, {
+            Header: 'Notes',
+            accessor: 'notes' 
+          }, {
+            Header: 'Notes By',
+            accessor: 'notesBy' 
+          }]
         return (
             <div>
             <h2>FILE NOTES LOG</h2>
-              <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Notes</th>
-                  <th>Notes By</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                  this.props.fileNotes.map((fileNote, i) => (
-                    <FileNote fileNote={fileNote} key={i}/>
-                ))
-            }
-               </tbody>
-               </table>
+            <ReactTable
+                  data={this.props.fileNotes}
+                  columns={columns}
+                  defaultPageSize={6}
+                />
                </div>      
         );
     }

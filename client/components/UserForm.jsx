@@ -62,7 +62,7 @@ class UserForm extends Component {
             <div className="row content">
               <SideNav/>
             <div className="jumbotron col-sm-10">
-                    <div className="col-sm-8">
+                    <div className="col-sm-12">
             <form onSubmit={this.onSubmit}>
                 <legend>User Registration Form</legend>
                 <div className="form-group">

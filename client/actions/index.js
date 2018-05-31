@@ -18,10 +18,10 @@ export const registerUser = (user) => {
     };
 };
 
-export const recieveUserList = (offset=0) => {
+export const recieveUserList = () => {
     
     return (dispatch) => {
-        return axios.get(`/users?offset=${offset}`)
+        return axios.get('/users')
         .then((response) => {
             dispatch({
                 type: types.RECEIVE_USER_LIST,
@@ -38,6 +38,7 @@ export const recieveUserList = (offset=0) => {
 
 
 export const deactivateUser = (userItem) => {
+    
     return (dispatch) => {
         return axios.put('/user', userItem)
         .then((response) => {
@@ -192,18 +193,21 @@ export const updateFile = (file) => {
     };
 };
 
-export const recieveFiles = (files, dispatch) => {
-    axios.get(`/files`)
-        .then((response) => 
+export const recieveFiles = () => {
+    return (dispatch) => {
+        return axios.get(`/files`)
+        .then((response) => {
             dispatch({
                 type: types.RECIEVE_FILES,
-                payload: response.data.fileList
-            }))
-        .catch((error) => 
-            dispatch({
-                type: types.RECEIVE_ERROR,
-                payload: error.response.data.message
-            }));
+                payload: response.data.files
+            });
+            return true;
+          })
+          .catch((error) => dispatch({
+                    type: types.RECEIVE_ERROR,
+                     payload: error
+                }));
+      };
 };
 
 export const recieveFilesByDepartment = (department) => {

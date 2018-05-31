@@ -6,6 +6,8 @@ import FileMovement from './FileMovement.jsx';
 import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
+import 'react-table/react-table.css';
+import ReactTable from "react-table";
 
 
 class FileMovementList extends Component {
@@ -21,26 +23,27 @@ class FileMovementList extends Component {
     }
 
     render(){
+        const columns = [{
+            Header: 'Date',
+            accessor: 'DateMoved' 
+          }, {
+            Header: 'Moved From Department',
+            accessor: 'movedFromDepartment' 
+          }, {
+            Header: 'Moved To Department',
+            accessor: 'movedToDepartment' 
+          }, {
+            Header: 'Moved By',
+            accessor: 'movedBy' 
+          }]
         return (
             <div>
             <h2>FILE MOVEMENT LOG</h2>
-              <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Date Moved</th>
-                  <th>Moved From</th>
-                  <th>Moved To</th>
-                  <th>Moved By</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                  this.props.fileMovements.map((fileMovement, i) => (
-                    <FileMovement fileMovement={fileMovement} key={i}/>
-                ))
-            }
-               </tbody>
-               </table>
+            <ReactTable
+                  data={this.props.fileMovements}
+                  columns={columns}
+                  defaultPageSize={6}
+                />
                </div>      
         );
     }

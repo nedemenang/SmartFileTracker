@@ -51,15 +51,11 @@ export default {
 
     list(req, res) {
         return User
-            .findAndCountAll({
-                offset: req.query.offset * 2,
-                limit: 2
-            })
+            .findAndCountAll()
             .then(users => res.status(200).send({
                 success: true, 
                 userList: users,
-                message: 'users fetched successfully',
-                paginateData: paginate(users.count, 2, req.query.offset * 2)
+                message: 'users fetched successfully'
             }))
             .catch(error => res.status(400).send(error))
     },

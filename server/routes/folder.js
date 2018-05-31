@@ -39,6 +39,9 @@ export default function (app) {
     app.post('/fileMovement', auth, FileController.CreateFileMovement);
 
     // get file movement for file
+    app.get('/files', FileController.list);
+
+    // get file movement for file
     app.get('/fileMovements/:fileId', FileController.listFileMovementsForFile);
 
     // get notes for file

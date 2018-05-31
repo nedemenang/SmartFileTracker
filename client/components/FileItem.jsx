@@ -23,6 +23,7 @@ class FileItem extends Component {
             <tr>
                   <td>{fileItem.id}</td>
                   <td>{fileItem.FileNo}</td>
+                  <td>{fileItem.Name}</td>
                   <td>{fileItem.FileDescription}</td>
                   <td><a className="btn btn-primary" onClick={this.onClick}>View</a></td>
                 </tr>

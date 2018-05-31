@@ -99,7 +99,7 @@ class FileMovementForm extends Component {
         <div className="row content">
           <SideNavFileDashboard/>
           <div className="jumbotron col-sm-10">
-                <div className="col-sm-8">
+                <div className="col-sm-10">
         <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label for="movedToDepartment">Move To</label>

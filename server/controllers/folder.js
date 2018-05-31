@@ -75,18 +75,12 @@ export default {
             .all({
                 where: {
                     isActive: true
-                }}, {
-                include: [{
-                    model: FileNote, 
-                    attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
-                    as: 'FileNotes'
-                }, {
-                    model: FileMovement,
-                    attributes: ['id', 'DateMoved', 'movedFromDepartmentId','movedToDepartmentId','movedBy','movedTo'],
-                    as: 'FileMovements'
-                }]
-            })
-            .then(folder => res.status(201).send(folder))
+                }})
+            .then(fileList => res.status(201).send({
+                success: true,
+                files: fileList,
+                message: 'Files fetched successfully'
+            }))
             .catch(error => res.status(400).send(error));
     },
 
@@ -96,17 +90,7 @@ export default {
                 where: {
                     isActive: true,
                     CurrentDepartment: req.params.departmentId
-                }}, {
-                include: [{
-                    model: FileNote, 
-                    attributes: ['id', 'DateCreate', 'Notes', 'NotesBy'],
-                    as: 'FileNotes'
-                }, {
-                    model: FileMovement,
-                    attributes: ['id', 'DateMoved', 'movedFromDepartment','movedToDepartment','movedBy','movedTo'],
-                    as: 'FileMovements'
-                }]
-            })
+                }})
             .then(fileList => res.status(201).send({
                 success: true,
                 files: fileList,

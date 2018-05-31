@@ -56,7 +56,7 @@ class LoginForm extends Component {
             <div className="container">
             <div className="row">
                 <div className="col-md-6 login-sec">
-                    <h2 className="text-center">Smart File Tracker</h2>
+                    <h2 className="text-center"></h2>
 		    <form className="login-form" onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label for="username" className="text-uppercase">Username</label>
