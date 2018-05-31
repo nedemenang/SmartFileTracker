@@ -24,13 +24,17 @@ class FileList extends Component {
     }
 
     onChange(e) {
+      e.preventDefault()
       this.setState({[e.target.name]: e.target.value});
 
         this.setState({ searchedArray:
           this.props.files });
 
-        this.setState({ searchedArray: lodash.query(this.props.files,
-        { FileNo: { $like: this.state.searchParameter.trim() } }) });
+        this.setState({
+            searchedArray: lodash.filter(this.props.files, function(o) {
+              return o.Name.toLowerCase().indexOf(e.target.value.trim()) > -1 
+            })
+        })
   }
 
     componentWillMount() {
@@ -58,6 +62,9 @@ class FileList extends Component {
         Header: 'File Description',
         accessor: 'FileDescription' 
       }, {
+        Header: 'Location',
+        accessor: 'CurrentDepartment' 
+      }, {
         header: '',
         id: 'click-me-button',
         Cell: props => (<button className="btn btn-success">View</button>)
@@ -81,7 +88,7 @@ class FileList extends Component {
                     className="form-control" 
                     name="searchParameter"
                     id="searchParameter" 
-                    placeholder="Search"/>
+                    placeholder="Search By File name"/>
                </div>
                </div>
                <hr/>

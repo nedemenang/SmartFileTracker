@@ -45,6 +45,9 @@ app.use((0, _morgan2.default)('dev'));
 
 // Parse incoming requests data 
 app.use('/server/uploads', _express2.default.static(_path2.default.resolve(__dirname, './uploads')));
+if (process.env.NODE_ENV === 'production') {
+  app.use('/vendors/css', _express2.default.static(_path2.default.resolve(__dirname, '../vendors/css')));
+}
 app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 

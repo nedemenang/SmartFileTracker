@@ -16,7 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
+    "username": "l_map",
     "password": "Password1",
     "database": "smartfiletracker",
     "host": "127.0.0.1",

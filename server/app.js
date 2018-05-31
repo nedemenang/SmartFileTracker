@@ -17,6 +17,9 @@ app.use(logger('dev'));
 
 // Parse incoming requests data 
 app.use('/server/uploads', express.static(path.resolve(__dirname, './uploads')));
+if (process.env.NODE_ENV === 'production') {
+  app.use('/vendors/css', express.static(path.resolve(__dirname, '../vendors/css')));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

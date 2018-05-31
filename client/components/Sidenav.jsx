@@ -4,6 +4,19 @@ import { connect } from 'react-redux';
 class Sidenav extends Component {
     constructor(props) {
         super(props);
+        
+        this.state = {
+            userRole: ''
+        }
+
+    }
+
+    componentDidMount() {
+        if (this.props.currentUser) {
+            this.setState({
+                userRole: this.props.currentUser.role
+            })
+        }
     }
 
     render(){
@@ -13,7 +26,7 @@ class Sidenav extends Component {
                   <li className="nav-item"><a className="nav-link" href="/new-file">New File</a></li>
                   <li className="nav-item"><a className="nav-link" href="/password-reset">Password Reset</a></li>
                   {
-                      this.props.currentUser.role === "admin" &&
+                      this.state.userRole === "admin" &&
                     <div>
                       <li className="nav-item"><a className="nav-link" href="/new-user">New User</a></li>
                     <li className="nav-item"><a className="nav-link" href="/new-department">New Department</a></li>

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import '../vendors/bootstrap.min.css';
 import '../vendors/css/customCss.css';
 import '../vendors/js/jquery-3.3.1.min.js';
+import '../vendors/css/materialize.css';
+import '../vendors/css/style.css';
 import {store, persistor} from '../store/store.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
