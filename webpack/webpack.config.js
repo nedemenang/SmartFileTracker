@@ -8,7 +8,7 @@ const config = {
     'webpack-hot-middleware/client'
   ],
   output: {
-    path: path.resolve(__dirname, '../client/public'),
+    path: path.resolve(__dirname, '../dist/client/public'),
     publicPath: '/',
     filename: 'bundle.js',
   },

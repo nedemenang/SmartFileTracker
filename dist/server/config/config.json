@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "l_map",
+    "password": "Password1",
+    "database": "smartfiletracker",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "root",
+    "password": "Password1",
+    "database": "smartfiletracker",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": "Password1",
+    "database": "smartfiletracker",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

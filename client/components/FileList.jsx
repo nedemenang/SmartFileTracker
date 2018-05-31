@@ -9,6 +9,7 @@ import SideNav from './Sidenav.jsx';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { selectFile } from '../actions/index.js';
+import lodash from 'lodash';
 
 class FileList extends Component {
 
@@ -16,13 +17,20 @@ class FileList extends Component {
         super(props);
 
         this.state = {
-          searchParameter: ''
+          searchParameter: '',
+          searchedArray: this.props.files
         }
         this.onChange = this.onChange.bind(this);
     }
 
     onChange(e) {
       this.setState({[e.target.name]: e.target.value});
+
+        this.setState({ searchedArray:
+          this.props.files });
+
+        this.setState({ searchedArray: lodash.query(this.props.files,
+        { FileNo: { $like: this.state.searchParameter.trim() } }) });
   }
 
     componentWillMount() {
@@ -78,7 +86,7 @@ class FileList extends Component {
                </div>
                <hr/>
                 <ReactTable
-                  data={this.props.files}
+                  data={this.state.searchedArray}
                   columns={columns}
                   defaultPageSize={6}
                   getTdProps={(state, rowInfo, column, instance) => {
