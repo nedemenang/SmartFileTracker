@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 class Sidenav extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
-            userRole: ''
+            userRole: this.props.currentUser.role
         }
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.currentUser) {
             this.setState({
                 userRole: this.props.currentUser.role
@@ -40,7 +40,7 @@ class Sidenav extends Component {
 }
 
 const mapStateToProps = state => ({
-    currentUser: state.authenticationReducer.currentUser,
+    currentUser: state.authenticationReducer.user,
     files: state.fileManagementReducer.files
     
 });

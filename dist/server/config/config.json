@@ -1,8 +1,8 @@
 {
   "development": {
     "operatorsAliases": false,
-    "username": "postgres",
-    "password": "helen123",
+    "username": "l_map",
+    "password": "Password1",
     "database": "smartfiletracker",
     "host": "127.0.0.1",
     "port": 5432,
@@ -19,8 +19,8 @@
   },
   "production": {
     "operatorsAliases": false,
-    "username": "postgres",
-    "password": "helen123",
+    "username": "l_map",
+    "password": "Password1",
     "database": "smartfiletracker",
     "host": "127.0.0.1",
     "port": 5432,
