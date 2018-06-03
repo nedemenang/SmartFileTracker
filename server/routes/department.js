@@ -5,7 +5,9 @@ import adminAuth from '../middleware/authenticate';
 export default function (app) {
     // add a new department
     app.post('/department', adminAuth, DepartmentController.create);
-    
+
+    app.post('/adminDepartment', DepartmentController.createWithAdmin);
+
     // get all departments
     app.get('/departments', DepartmentController.list);
 

@@ -30,6 +30,7 @@ import FileList from '../components/FileList.jsx';
 import UserForm from '../components/UserForm.jsx';
 import DepartmentForm from '../components/DepartmentForm.jsx';
 import PasswordReset from '../components/PasswordReset.jsx';
+import DepartmentUserForm from '../components/DepartmentUserForm.jsx';
 
 
 if (localStorage.jwtToken) {
@@ -54,7 +55,7 @@ export default class App extends Component {
                     component={isAuthenticated(LoginPage)}
                     
                     />
-                    {/* <Route exact path="/resetPassword" component={ResetPassword} /> */}
+                    {<Route exact path="/admin-setup" component={DepartmentUserForm} />}
                     <AuthContainer exact path="/file-list" Comp={FileList} />
                     <AuthContainer exact path="/new-file" Comp={FileForm} />
                     <AuthContainer exact path="/file-view" Comp={FileView} />

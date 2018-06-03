@@ -30,6 +30,33 @@ export default {
             })
     },
 
+    createWithAdmin(req, res) {
+        return Department
+            .findOne({
+                where: {
+                    name: req.body.departmentName
+                }
+            }).then((departmentExists) => {
+                if(departmentExists) {
+                    return res.status(400).send({
+                        success: false,
+                        message: 'Department already exists'
+                      });
+                }
+                return Department
+                    .create({
+                        name: req.body.departmentName,
+                        createdBy: 'admin'
+                    })
+                    .then(department => res.status(201).send({
+                        success: true,
+                        department: department,
+                        message: 'Department successfully created'
+                    }))
+                    .catch(error => res.status(400).send(error));
+            })
+    },
+
     list(req, res) {
         return Department
             .all({

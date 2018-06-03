@@ -10,7 +10,7 @@ export default function (app) {
 
     app.post('/signin', User.signIn);
 
-    app.post('/signUpInitial', User.create);
+    app.post('/signUpInitial', User.createWithAdmin);
 
     app.get('/users', User.list);
 

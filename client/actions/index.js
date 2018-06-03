@@ -4,6 +4,33 @@ import {persistor} from '../store/store.js';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import types from '../types/types';
 
+export const addAdminDepartment = (department) => {
+    return (dispatch) => {
+        return axios.post('/adminDepartment', department)
+        .then((response) => {
+                dispatch(recieveSuccess(response.data.message));
+                dispatch(recieveDepartments());
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
+    };
+};
+
+export const addAdminUser = (user) => {
+    return (dispatch) => {
+        return axios.post('/signUpInitial', user)
+        .then((response) => {
+                dispatch(recieveSuccess(response.data.message));
+                return true;
+        })
+        .catch((error) => {
+                dispatch(recieveError(error.response.data.message));
+        })
+    };
+};
+
 export const registerUser = (user) => {
     return (dispatch) => {
         return axios.post('/signup', user)

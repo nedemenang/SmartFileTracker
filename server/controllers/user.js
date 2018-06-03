@@ -36,7 +36,50 @@ export default {
                             password: hash,
                             createdBy: req.userData.userName,
                             role: req.body.role,
-                            departmentId: req.body.department
+                            departmentId: req.body.department,
+                            isActive: true
+                        })
+                        .then(user => res.status(201).send({
+                            success: true,
+                            data: user,
+                            message: 'User successfully created'
+                        }))
+                        .catch(error => res.status(400).send(error));
+                    }
+                })
+            })
+    },
+
+    createWithAdmin(req, res) {
+        return User
+            .findOne({
+                where: {
+                    UserName: req.body.userName
+                }
+            }).then((userNameExists) => {
+                if(userNameExists) {
+                    return res.status(400).send({
+                        success: false,
+                        message: 'Username already exists'
+                      });
+                }
+                bcrypt.hash('Password1', 10, (err, hash) => {
+                    if (err) {
+                        return res.status(500).send({
+                            success: false,
+                            message: 'error occurred: ' + err
+                        });
+                    } else {
+                        return User
+                        .create({
+                            FirstName: req.body.firstName,
+                            LastName: req.body.lastName,
+                            UserName: req.body.userName,
+                            password: hash,
+                            createdBy: 'admin',
+                            role: req.body.role,
+                            departmentId: req.body.department,
+                            isActive: true
                         })
                         .then(user => res.status(201).send({
                             success: true,
