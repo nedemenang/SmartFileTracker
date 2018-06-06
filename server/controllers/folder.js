@@ -20,7 +20,7 @@ export default {
                 return Folder 
                     .create({
                         FileNo : req.body.fileNo,
-                        CreateOn : Date.now(),
+                        CreateOn : (new Date()).toLocaleString('en-GB'),
                         Name: req.body.fileName,
                         CurrentDepartment : req.body.currentDepartment,
                         FileDescription : req.body.fileDescription,
@@ -128,7 +128,7 @@ export default {
 
     update(req, res) {
         return Folder
-            .findById(req.body.folderId)
+            .findById(req.body.id)
             .then(folder => {
                 if (!folder) {
                     return res.status(404).send({
@@ -137,13 +137,18 @@ export default {
                 }
                 return folder
                     .update({
-                        FileNo : req.body.fileNo || folder.fileNo,
-                        FileHash : req.body.fileHash || folder.fileHash,
-                        CurrentDepartment : req.body.currentDepartment || folder.currentDepartment,
-                        FileDescription : req.body.fileDescription || folder.fileDescription,
-                        FileLink : req.body.fileLink || folder.fileLink
+                        isActive: false
+                        // FileNo : req.body.fileNo || folder.fileNo,
+                        // FileHash : req.body.fileHash || folder.fileHash,
+                        // CurrentDepartment : req.body.currentDepartment || folder.currentDepartment,
+                        // FileDescription : req.body.fileDescription || folder.fileDescription,
+                        // FileLink : req.body.fileLink || folder.fileLink
                     })
-                    .then((department) => res.status(200).send(folder))
+                    .then((folder) => res.status(200).send({
+                        success: true,
+                        folder: folder,
+                        message: 'File deactivated'
+                    }))
                     .catch((error) => res.status(400).send(error));
             })
     },
@@ -164,7 +169,7 @@ export default {
             }
             FileMovement
             .create({
-                DateMoved: Date.now(),
+                DateMoved: (new Date()).toLocaleString('en-GB'),
                 movedFromDepartment: req.body.movedFromDepartment,
                 movedToDepartment: req.body.movedToDepartment,
                 movedBy: req.userData.userName,
@@ -190,7 +195,7 @@ export default {
     CreateFileNote(req, res) {
         return FileNote
             .create({
-                DateCreated: Date.now(),
+                DateCreated: (new Date()).toLocaleString('en-GB'),
                 notes: req.body.fileNote,
                 folderId: req.body.folderId,
                 notesBy: req.userData.userName

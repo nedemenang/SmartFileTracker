@@ -48,7 +48,7 @@ class DepartmentList extends Component {
                       onClick: (e, handleOriginal) => {
                         swal({
                           title: 'Confirmation',
-                          text: "Are you sure you want to deactivate this depatment?",
+                          text: "Are you sure you want to deactivate this department?",
                           type: 'warning',
                           showCancelButton: true,
                           confirmButtonColor: '#3085d6',

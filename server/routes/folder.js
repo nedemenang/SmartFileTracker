@@ -2,13 +2,14 @@ import multer from 'multer';
 import Validator from '../utilities/Validator';
 import FileController from '../controllers/folder';
 import auth from '../middleware/authenticate';
+import adminAuth from '../middleware/authenticate';
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, './server/uploads/');
+        cb(null, './dist/server/uploads/');
     },
     filename: function(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname)
+        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
     }
 });
 
@@ -19,6 +20,8 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('File type can only be pdf'), false);
     }
 };
+
+
 
 const upload = multer({
     storage: storage,
@@ -31,6 +34,8 @@ const upload = multer({
 export default function (app) {
     // add a new file
     app.post('/file', auth, upload.single('uploadedFile'), FileController.createFile);
+
+    app.put('/file', adminAuth, FileController.update);
 
     // add new file note
     app.post('/fileNote', auth, FileController.CreateFileNote);

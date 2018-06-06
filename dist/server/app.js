@@ -41,10 +41,9 @@ var app = (0, _express2.default)();
 // Log requests to the console.
 app.use((0, _morgan2.default)('dev'));
 
-//app.use('/', publicPath);
-
 // Parse incoming requests data 
-app.use('/server/uploads', _express2.default.static(_path2.default.resolve(__dirname, './uploads')));
+app.use('/dist/server/uploads', _express2.default.static(_path2.default.resolve(__dirname, './uploads')));
+
 if (process.env.NODE_ENV === 'production') {
   app.use('/vendors/css', _express2.default.static(_path2.default.resolve(__dirname, '../vendors/css')));
 }

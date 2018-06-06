@@ -27,7 +27,7 @@ exports.default = {
             }
             return _models.Folder.create({
                 FileNo: req.body.fileNo,
-                CreateOn: Date.now(),
+                CreateOn: new Date().toLocaleString('en-GB'),
                 Name: req.body.fileName,
                 CurrentDepartment: req.body.currentDepartment,
                 FileDescription: req.body.fileDescription,
@@ -136,20 +136,25 @@ exports.default = {
         });
     },
     update: function update(req, res) {
-        return _models.Folder.findById(req.body.folderId).then(function (folder) {
+        return _models.Folder.findById(req.body.id).then(function (folder) {
             if (!folder) {
                 return res.status(404).send({
                     message: 'Folder not found'
                 });
             }
             return folder.update({
-                FileNo: req.body.fileNo || folder.fileNo,
-                FileHash: req.body.fileHash || folder.fileHash,
-                CurrentDepartment: req.body.currentDepartment || folder.currentDepartment,
-                FileDescription: req.body.fileDescription || folder.fileDescription,
-                FileLink: req.body.fileLink || folder.fileLink
-            }).then(function (department) {
-                return res.status(200).send(folder);
+                isActive: false
+                // FileNo : req.body.fileNo || folder.fileNo,
+                // FileHash : req.body.fileHash || folder.fileHash,
+                // CurrentDepartment : req.body.currentDepartment || folder.currentDepartment,
+                // FileDescription : req.body.fileDescription || folder.fileDescription,
+                // FileLink : req.body.fileLink || folder.fileLink
+            }).then(function (folder) {
+                return res.status(200).send({
+                    success: true,
+                    folder: folder,
+                    message: 'File deactivated'
+                });
             }).catch(function (error) {
                 return res.status(400).send(error);
             });
@@ -168,7 +173,7 @@ exports.default = {
                 });
             }
             _models.FileMovement.create({
-                DateMoved: Date.now(),
+                DateMoved: new Date().toLocaleString('en-GB'),
                 movedFromDepartment: req.body.movedFromDepartment,
                 movedToDepartment: req.body.movedToDepartment,
                 movedBy: req.userData.userName,
@@ -194,7 +199,7 @@ exports.default = {
     },
     CreateFileNote: function CreateFileNote(req, res) {
         return _models.FileNote.create({
-            DateCreated: Date.now(),
+            DateCreated: new Date().toLocaleString('en-GB'),
             notes: req.body.fileNote,
             folderId: req.body.folderId,
             notesBy: req.userData.userName

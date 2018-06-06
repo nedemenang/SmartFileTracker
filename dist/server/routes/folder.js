@@ -8,6 +8,8 @@ exports.default = function (app) {
     // add a new file
     app.post('/file', _authenticate2.default, upload.single('uploadedFile'), _folder2.default.createFile);
 
+    app.put('/file', _authenticate2.default, _folder2.default.update);
+
     // add new file note
     app.post('/fileNote', _authenticate2.default, _folder2.default.CreateFileNote);
 
@@ -52,10 +54,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var storage = _multer2.default.diskStorage({
     destination: function destination(req, file, cb) {
-        cb(null, './server/uploads/');
+        cb(null, './dist/server/uploads/');
     },
     filename: function filename(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
+        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
     }
 });
 

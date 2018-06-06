@@ -207,16 +207,22 @@ export const addFile = (file) => {
                 return true;
         })
         .catch((error) => {
-                console.log(error.response.data);
                 dispatch(recieveError(error.response.data.message));
         })
     };
 };
 
 export const updateFile = (file) => {
-    return {
-        type: types.UPDATE_DEPARTMENT,
-        file,
+    return (dispatch) => {
+        return axios.put('/file', file)
+            .then(
+                (response) => {
+                    dispatch(recieveSuccess(response.data.message));
+                    return true;
+            })
+            .catch((error) => {
+                    dispatch(recieveError(error.response.data.message));
+            });
     };
 };
 

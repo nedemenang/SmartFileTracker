@@ -10,20 +10,76 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { selectFile } from '../actions/index.js';
 import lodash from 'lodash';
+import toastr from 'toastr';
+import dateFormat from 'dateformat';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class FileList extends Component {
 
     constructor(props) {
         super(props);
 
+        if(this.props.currentUser) {
+          const department = {
+            departmentId: this.props.currentUser.department
+          }
+          if (this.props.currentUser.role === 'admin') {
+            this.props.recieveFiles();
+          } else {
+            this.props.recieveFilesByDepartment(department);
+          }
+        }
+
         this.state = {
           searchParameter: '',
-          searchedArray: this.props.files
+          searchedArray: this.props.files,
+          dateFrom: '',
+          dateTo: ''
         }
-        this.onChange = this.onChange.bind(this);
+        this.onChangeNameSearch = this.onChangeNameSearch.bind(this);
+        this.onChangeDateTo = this.onChangeDateTo.bind(this);
+        this.onChangeDateFrom = this.onChangeDateFrom.bind(this);
+        this.onSearchClick = this.onSearchClick.bind(this);
     }
 
-    onChange(e) {
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+          searchedArray: nextProps.files
+        })
+     }
+
+     onChangeDateFrom(date) {
+      this.setState({
+        searchedArray: this.props.files,
+        dateFrom: date
+      })
+    }
+
+    onSearchClick(e){
+      e.preventDefault()
+      const dateFrom = document.getElementById("dateFrom").value;
+      const dateTo = document.getElementById("dateTo").value;
+      if (dateFrom !== '' || dateTo !== '') {
+        this.setState({
+          searchedArray: lodash.filter(this.props.files, function(o){
+             const df = moment(dateFrom)
+             const dt = moment(dateTo)
+             return moment(o.CreateOn).isAfter(df) && moment(o.CreateOn).isBefore(dt)
+          })
+        })
+       }
+    }
+
+     onChangeDateTo(date) {
+       this.setState({
+         searchedArray: this.props.files,
+         dateTo: date
+       })
+     }
+
+     onChangeNameSearch(e) {
       e.preventDefault()
       this.setState({[e.target.name]: e.target.value});
 
@@ -36,20 +92,6 @@ class FileList extends Component {
             })
         })
   }
-
-    componentWillMount() {
-      if(this.props.currentUser) {
-        const department = {
-          departmentId: this.props.currentUser.department
-        }
-        if (this.props.currentUser.role === 'admin') {
-          this.props.recieveFiles();
-        } else {
-          this.props.recieveFilesByDepartment(department);
-        }
-        
-      }
-    }
 
     render(){
       const columns = [{
@@ -64,6 +106,10 @@ class FileList extends Component {
       }, {
         Header: 'Location',
         accessor: 'CurrentDepartment' 
+      }, {
+        Header: 'Date Created',
+        accessor: `CreateOn`,
+        Cell: props => <span className='string'>{dateFormat(props.value, "dddd, mmmm dS, yyyy, h:MM:ss TT")}</span>
       }, {
         header: '',
         id: 'click-me-button',
@@ -84,11 +130,32 @@ class FileList extends Component {
                 <div className="col-sm-6">
                <input type="text" 
                     value={this.state.searchParameter}
-                    onChange={this.onChange}
+                    onChange={this.onChangeNameSearch}
                     className="form-control" 
                     name="searchParameter"
                     id="searchParameter" 
                     placeholder="Search By File name"/>
+                    <div className="row">
+                    <div className="col-sm-6">
+               <DatePicker
+               selected={this.state.dateFrom}
+               id="dateFrom"
+               dateFormat="LLL"
+               value={this.state.dateFrom}
+                placeholderText="Search Start Date"
+                onChange={this.onChangeDateFrom}/>
+                </div>
+              <div className="col-sm-6">
+              <DatePicker
+                selected={this.state.dateTo}
+                id="dateTo"
+                dateFormat="LLL"
+                value={this.state.dateTo}
+                onChange={this.onChangeDateTo}
+                placeholderText="Search End Date"/>
+                <button className="btn btn-success" onClick={this.onSearchClick}>Search</button>
+                </div>
+                 </div>
                </div>
                </div>
                <hr/>
@@ -101,7 +168,6 @@ class FileList extends Component {
                       onClick: (e, handleOriginal) => {
                         this.props.selectFile(rowInfo.original)
                         this.context.router.history.push('/file-view');
-                        // rowInfo.original
                         if (handleOriginal) {
                           handleOriginal();
                         }
@@ -130,7 +196,7 @@ FileList.contextTypes = {
 };
 
 const mapStateToProps = state => ({
-      currentUser: state.authenticationReducer.currentUser,
+      currentUser: state.authenticationReducer.user,
       files: state.fileManagementReducer.files
       
 });

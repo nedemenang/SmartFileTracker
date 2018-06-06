@@ -8,6 +8,8 @@ exports.default = function (app) {
     // add a new department
     app.post('/department', _authenticate2.default, _department2.default.create);
 
+    app.post('/adminDepartment', _department2.default.createWithAdmin);
+
     // get all departments
     app.get('/departments', _department2.default.list);
 

@@ -47,7 +47,49 @@ exports.default = {
                         password: hash,
                         createdBy: req.userData.userName,
                         role: req.body.role,
-                        departmentId: req.body.department
+                        departmentId: req.body.department,
+                        isActive: true
+                    }).then(function (user) {
+                        return res.status(201).send({
+                            success: true,
+                            data: user,
+                            message: 'User successfully created'
+                        });
+                    }).catch(function (error) {
+                        return res.status(400).send(error);
+                    });
+                }
+            });
+        });
+    },
+    createWithAdmin: function createWithAdmin(req, res) {
+        return _models.User.findOne({
+            where: {
+                UserName: req.body.userName
+            }
+        }).then(function (userNameExists) {
+            if (userNameExists) {
+                return res.status(400).send({
+                    success: false,
+                    message: 'Username already exists'
+                });
+            }
+            _bcrypt2.default.hash('Password1', 10, function (err, hash) {
+                if (err) {
+                    return res.status(500).send({
+                        success: false,
+                        message: 'error occurred: ' + err
+                    });
+                } else {
+                    return _models.User.create({
+                        FirstName: req.body.firstName,
+                        LastName: req.body.lastName,
+                        UserName: req.body.userName,
+                        password: hash,
+                        createdBy: 'admin',
+                        role: req.body.role,
+                        departmentId: req.body.department,
+                        isActive: true
                     }).then(function (user) {
                         return res.status(201).send({
                             success: true,

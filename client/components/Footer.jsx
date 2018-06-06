@@ -11,7 +11,7 @@ class Footer extends Component {
         return (
         <div>
             <footer className="container-fluid">
-            <p>&copy; Plutonix Software Solutions - {year}</p>
+        <p>&copy; {year}</p>
           </footer> 
         </div>        
         );

@@ -12,7 +12,7 @@ exports.default = function (app) {
 
     app.post('/signin', _user2.default.signIn);
 
-    app.post('/signUpInitial', _user2.default.create);
+    app.post('/signUpInitial', _user2.default.createWithAdmin);
 
     app.get('/users', _user2.default.list);
 

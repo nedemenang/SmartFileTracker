@@ -84,7 +84,6 @@ class DepartmentUserForm extends Component {
               <NavBar/>
               <div className="container-fluid">
             <div className="row content">
-              <SideNav/>
               <div className="jumbotron col-sm-10">
                     <div className="col-sm-8">
                     <h2>Department</h2>

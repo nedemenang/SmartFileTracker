@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
-import { addFile } from '../actions/index.js';
+import { addFile, recieveFilesByDepartment, recieveFiles } from '../actions/index.js';
 import { validateFileInput } from '../validation/validation.js';
 import toastr from 'toastr';
 
@@ -55,6 +55,9 @@ class FileForm extends Component {
     onSubmit(e) {
         e.preventDefault();
         this.setState({ errors: {} });
+        const department = {
+            departmentId: this.props.auth.currentUser.department
+          }
         if (this.isValid()) {
             this.props.addFile(this.state).then((response) => {
               if (response) {

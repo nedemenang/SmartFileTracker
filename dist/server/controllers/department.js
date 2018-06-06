@@ -33,6 +33,32 @@ exports.default = {
             });
         });
     },
+    createWithAdmin: function createWithAdmin(req, res) {
+        return _models.Department.findOne({
+            where: {
+                name: req.body.departmentName
+            }
+        }).then(function (departmentExists) {
+            if (departmentExists) {
+                return res.status(400).send({
+                    success: false,
+                    message: 'Department already exists'
+                });
+            }
+            return _models.Department.create({
+                name: req.body.departmentName,
+                createdBy: 'admin'
+            }).then(function (department) {
+                return res.status(201).send({
+                    success: true,
+                    department: department,
+                    message: 'Department successfully created'
+                });
+            }).catch(function (error) {
+                return res.status(400).send(error);
+            });
+        });
+    },
     list: function list(req, res) {
         return _models.Department.all({
             where: {

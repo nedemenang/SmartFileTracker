@@ -8,6 +8,7 @@ import Footer from './Footer.jsx';
 import SideNav from './Sidenav.jsx';
 import 'react-table/react-table.css';
 import ReactTable from "react-table";
+import dateFormat from 'dateformat';
 
 
 class FileMovementList extends Component {
@@ -25,7 +26,8 @@ class FileMovementList extends Component {
     render(){
         const columns = [{
             Header: 'Date',
-            accessor: 'DateMoved' 
+            accessor: 'DateMoved',
+            Cell: props => <span className='string'>{dateFormat(props.value, "dddd, mmmm dS, yyyy, h:MM:ss TT")}</span>
           }, {
             Header: 'Moved From Department',
             accessor: 'movedFromDepartment' 
